@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Más Allá del Producto: Calidad en Uso</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+      }
+
+      .presentation-container {
+        max-width: 1200px;
+        width: 95%;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .slide {
+        display: none;
+        padding: 60px;
+        min-height: 700px;
+        animation: slideIn 0.5s ease-out;
+      }
+
+      .slide.active {
+        display: block;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .slide h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 20px;
+        line-height: 1.2;
+      }
+
+      .slide h2 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 30px;
+      }
+
+      .subtitle {
+        font-size: 1.4rem;
+        color: #718096;
+        margin-bottom: 40px;
+        font-style: italic;
+        line-height: 1.4;
+      }
+
+      .source {
+        background: #f7fafc;
+        padding: 20px;
+        border-left: 4px solid #667eea;
+        margin: 30px 0;
+        border-radius: 8px;
+      }
+
+      .comparison-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin: 40px 0;
+      }
+
+      .comparison-card {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 15px;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+      }
+
+      .comparison-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .comparison-card.product {
+        border-color: #f56565;
+        background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+      }
+
+      .comparison-card.usage {
+        border-color: #48bb78;
+        background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+      }
+
+      .comparison-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #2d3748;
+      }
+
+      .comparison-item {
+        margin-bottom: 15px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .comparison-item:last-child {
+        border-bottom: none;
+      }
+
+      .comparison-item strong {
+        color: #2d3748;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 30px 0;
+      }
+
+      .analogy-box h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 60px;
+        background: #f8f9fa;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .nav-button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .nav-button:hover {
+        background: #5a67d8;
+        transform: translateY(-2px);
+      }
+
+      .nav-button:disabled {
+        background: #cbd5e0;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .slide-counter {
+        background: #667eea;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+      }
+
+      .teacher-notes {
+        background: #e6fffa;
+        border: 2px solid #38b2ac;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 30px 0;
+      }
+
+      .teacher-notes h4 {
+        color: #2c7a7b;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .teacher-notes p {
+        color: #2d3748;
+        line-height: 1.6;
+      }
+
+      .highlight {
+        background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+      }
+
+      .dimensions-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin: 30px 0;
+      }
+
+      .dimension-card {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .dimension-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .dimension-card.effectiveness {
+        border-color: #48bb78;
+        background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+      }
+
+      .dimension-card.efficiency {
+        border-color: #ed8936;
+        background: linear-gradient(135deg, #fffaf0 0%, #fbd38d 100%);
+      }
+
+      .dimension-card.satisfaction {
+        border-color: #9f7aea;
+        background: linear-gradient(135deg, #faf5ff 0%, #e9d8fd 100%);
+      }
+
+      .dimension-card.risk {
+        border-color: #f56565;
+        background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+      }
+
+      .dimension-card.context {
+        border-color: #38b2ac;
+        background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+      }
+
+      .dimension-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        color: #2d3748;
+      }
+
+      .dimension-content {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: #4a5568;
+      }
+
+      .dimension-content ul {
+        margin: 10px 0;
+        padding-left: 20px;
+      }
+
+      .dimension-content li {
+        margin-bottom: 5px;
+      }
+
+      .connections-container {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        margin: 30px 0;
+      }
+
+      .connection-item {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 25px;
+        transition: all 0.3s ease;
+      }
+
+      .connection-item:hover {
+        transform: translateX(10px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .connection-header,
+      .connection-result {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin: 10px 0;
+      }
+
+      .if-badge,
+      .then-badge {
+        background: #667eea;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        min-width: 80px;
+        text-align: center;
+      }
+
+      .then-badge {
+        background: #48bb78;
+      }
+
+      .connection-text {
+        flex: 1;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #4a5568;
+      }
+
+      .connection-arrow {
+        text-align: center;
+        font-size: 2rem;
+        color: #667eea;
+        margin: 10px 0;
+      }
+
+      .case-study {
+        background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+        border: 2px solid #f56565;
+        border-radius: 15px;
+        padding: 30px;
+        margin: 30px 0;
+      }
+
+      .case-study h3 {
+        color: #c53030;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      .case-content p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #2d3748;
+        margin-bottom: 20px;
+      }
+
+      .case-twist {
+        background: rgba(245, 101, 101, 0.1);
+        border: 2px solid #f56565;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      .case-twist p {
+        margin: 0;
+        font-weight: 600;
+        color: #c53030;
+      }
+
+      .discussion-questions {
+        margin: 40px 0;
+      }
+
+      .discussion-questions h3 {
+        font-size: 1.8rem;
+        color: #2d3748;
+        margin-bottom: 25px;
+      }
+
+      .question-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .question-card:hover {
+        transform: translateX(10px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border-color: #667eea;
+      }
+
+      .question-number {
+        background: #667eea;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+
+      .question-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #4a5568;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 30px;
+        }
+
+        .slide h1 {
+          font-size: 2.2rem;
+        }
+
+        .slide h2 {
+          font-size: 1.8rem;
+        }
+
+        .comparison-grid,
+        .dimensions-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .navigation {
+          padding: 15px 30px;
+        }
+
+        .connection-header,
+        .connection-result {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .if-badge,
+        .then-badge {
+          align-self: flex-start;
+        }
+
+        .question-card {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          gap: 15px;
+        }
+
+        .question-number {
+          align-self: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation-container">
+      <!-- Slide 1: Título -->
+      <div class="slide active">
+        <h1>Más Allá del Producto: Calidad en Uso</h1>
+        <p class="subtitle">
+          ¿De qué sirve un software "perfecto" si nadie puede o quiere usarlo?
+        </p>
+
+        <div class="source">
+          <strong>📚 Fuente Principal:</strong> Estándar "ISO/IEC 25010:2011
+          (SQuaRE)"
+        </div>
+
+        <div class="teacher-notes">
+          <h4>📝 Notas para el docente:</h4>
+          <p>
+            Inicia la sesión conectando con la clase anterior: "En la última
+            sesión, desglosamos el software en 8 características de calidad de
+            producto, como fiabilidad y rendimiento. Esas son las que nosotros,
+            como ingenieros, medimos. Pero hay una pregunta final y más
+            importante: ¿le sirve todo esto al usuario final en su vida real?
+            Hoy daremos el último paso y veremos la calidad desde la única
+            perspectiva que realmente importa: la del usuario."
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 2: El Cambio de Perspectiva -->
+      <div class="slide">
+        <h2>El Cambio de Perspectiva</h2>
+        <h1>De la Calidad del Producto a la Calidad en Uso</h1>
+
+        <div class="comparison-grid">
+          <div class="comparison-card product">
+            <h3>🔧 Calidad de Producto</h3>
+            <p style="font-style: italic; margin-bottom: 20px">
+              (Lo que vimos)
+            </p>
+
+            <div class="comparison-item">
+              <strong>Perspectiva:</strong>
+              Interna, del desarrollador y del sistema
+            </div>
+
+            <div class="comparison-item">
+              <strong>Pregunta:</strong>
+              ¿Qué tan bien está construido el software?
+            </div>
+
+            <div class="comparison-item">
+              <strong>Se mide en:</strong>
+              El entorno de desarrollo y pruebas
+            </div>
+
+            <div class="comparison-item">
+              <strong>Ejemplo:</strong>
+              El código tiene una baja complejidad ciclomática, el tiempo de
+              respuesta es de 200ms en el servidor de pruebas
+            </div>
+          </div>
+
+          <div class="comparison-card usage">
+            <h3>👤 Calidad en Uso</h3>
+            <p style="font-style: italic; margin-bottom: 20px">
+              (Lo que veremos hoy)
+            </p>
+
+            <div class="comparison-item">
+              <strong>Perspectiva:</strong>
+              Externa, del usuario final en su contexto real
+            </div>
+
+            <div class="comparison-item">
+              <strong>Pregunta:</strong>
+              ¿Qué tan bien le permite el software al usuario alcanzar sus
+              metas?
+            </div>
+
+            <div class="comparison-item">
+              <strong>Se mide en:</strong>
+              El entorno operativo real del usuario (su oficina, su casa, en la
+              calle con su móvil)
+            </div>
+
+            <div class="comparison-item">
+              <strong>Ejemplo:</strong>
+              Un contador puede completar el reporte de impuestos trimestral en
+              2 horas en lugar de 2 días
+            </div>
+          </div>
+        </div>
+
+        <div class="analogy-box">
+          <h3>🏎️ Analogía del Coche de Carreras</h3>
+          <p>
+            Un coche de Fórmula 1 tiene una
+            <strong>calidad de producto excepcional</strong> (rendimiento,
+            fiabilidad, ingeniería de punta). Pero si intentas usarlo para ir al
+            supermercado, su
+            <strong>calidad en uso es terrible</strong> (incómodo, difícil de
+            manejar, no tiene maletero). <em>El contexto lo es todo.</em>
+          </p>
+        </div>
+
+        <div class="highlight">
+          <strong>💡 Punto clave:</strong> "La Calidad en Uso es la consecuencia
+          de una buena Calidad de Producto. Es el resultado final. Podemos tener
+          un software técnicamente brillante que sea un fracaso total si no
+          consideramos el contexto y las metas reales del usuario."
+        </div>
+      </div>
+
+      <!-- Slide 3: Modelo de Calidad en Uso -->
+      <div class="slide">
+        <h1>Las 5 Dimensiones de la Experiencia del Usuario</h1>
+        <p class="subtitle">Modelo de Calidad en Uso (ISO/IEC 25010)</p>
+
+        <div class="highlight" style="margin-bottom: 30px">
+          <strong>Concepto:</strong> Mide el resultado de la interacción de un
+          usuario con un sistema para alcanzar metas específicas en un contexto
+          de uso determinado.
+        </div>
+
+        <div class="dimensions-grid">
+          <div class="dimension-card effectiveness">
+            <h3>🎯 1. Eficacia (Effectiveness)</h3>
+            <div class="dimension-content">
+              <strong>Pregunta Clave:</strong> ¿Los usuarios pueden lograr sus
+              objetivos con precisión y completitud? <br /><br />
+              <strong>Ejemplo:</strong> En una app de e-commerce, ¿el usuario
+              puede encontrar el producto que busca y completar la compra con
+              éxito? Si abandona el carrito porque no encuentra cómo pagar, la
+              eficacia es baja.
+            </div>
+          </div>
+
+          <div class="dimension-card efficiency">
+            <h3>⚡ 2. Eficiencia (Efficiency)</h3>
+            <div class="dimension-content">
+              <strong>Pregunta Clave:</strong> ¿Cuánto esfuerzo (tiempo,
+              recursos, pasos) necesita el usuario para lograr sus objetivos?
+              <br /><br />
+              <strong>Ejemplo:</strong> Si para realizar una transferencia
+              bancaria un usuario necesita hacer 15 clics y llenar 10 campos, la
+              eficiencia es baja. Si lo puede hacer en 3 clics, es alta.
+            </div>
+          </div>
+
+          <div class="dimension-card satisfaction">
+            <h3>😊 3. Satisfacción (Satisfaction)</h3>
+            <div class="dimension-content">
+              <strong>Pregunta Clave:</strong> ¿Qué tan agradable y
+              satisfactoria es la experiencia para el usuario? <br /><br />
+              <strong>Definición:</strong> Es la respuesta subjetiva del usuario
+              al interactuar con el sistema. Incluye la utilidad percibida, la
+              confianza, el placer y la comodidad. <br /><br />
+              <strong>Ejemplo:</strong> Una app puede ser eficaz y eficiente,
+              pero si su diseño es feo o la experiencia es frustrante, la
+              satisfacción será baja. Piensen en la diferencia entre una app de
+              gobierno y una app como Duolingo.
+            </div>
+          </div>
+
+          <div class="dimension-card risk">
+            <h3>🛡️ 4. Libre de Riesgo (Freedom from Risk)</h3>
+            <div class="dimension-content">
+              <strong>Pregunta Clave:</strong> ¿El sistema mitiga los riesgos
+              potenciales para el usuario, sus datos o el negocio? <br /><br />
+              <strong>Sub-características:</strong>
+              <ul>
+                <li>Mitigación de Riesgo Económico</li>
+                <li>Mitigación de Riesgo de Salud y Seguridad</li>
+                <li>Mitigación de Riesgo Ambiental</li>
+                <li>Mitigación de Riesgo Social</li>
+              </ul>
+              <br />
+              <strong>Ejemplo:</strong> ¿Un software de trading tiene mecanismos
+              para prevenir que un usuario pierda todo su dinero por un error de
+              clic?
+            </div>
+          </div>
+
+          <div class="dimension-card context">
+            <h3>🌍 5. Cobertura de Contexto (Context Coverage)</h3>
+            <div class="dimension-content">
+              <strong>Pregunta Clave:</strong> ¿El sistema es eficaz, eficiente,
+              satisfactorio y libre de riesgo en todos los contextos de uso
+              especificados? <br /><br />
+              <strong>Definición:</strong> Es la validación de que la calidad se
+              mantiene en diferentes escenarios. <br /><br />
+              <strong>Ejemplo:</strong> Una app de mapas debe funcionar bien
+              (tener buena calidad en uso) tanto si la usas en un coche con
+              buena señal 4G como si vas a pie por el centro de la ciudad con
+              una señal intermitente.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Conectando los Modelos -->
+      <div class="slide">
+        <h1>¿Cómo la Calidad Interna Impacta la Experiencia Externa?</h1>
+        <p class="subtitle">Conectando los Modelos: Producto → Uso</p>
+
+        <div class="connections-container">
+          <div class="connection-item">
+            <div class="connection-header">
+              <span class="if-badge">SI</span>
+              <span class="connection-text"
+                >mejoramos la <strong>Usabilidad</strong> (Calidad de
+                Producto)...</span
+              >
+            </div>
+            <div class="connection-arrow">↓</div>
+            <div class="connection-result">
+              <span class="then-badge">ENTONCES</span>
+              <span class="connection-text"
+                >impactamos positivamente la
+                <strong
+                  >Eficacia, Eficiencia y, sobre todo, la Satisfacción</strong
+                >
+                (Calidad en Uso).</span
+              >
+            </div>
+          </div>
+
+          <div class="connection-item">
+            <div class="connection-header">
+              <span class="if-badge">SI</span>
+              <span class="connection-text"
+                >mejoramos la <strong>Eficiencia de Desempeño</strong> (Calidad
+                de Producto)...</span
+              >
+            </div>
+            <div class="connection-arrow">↓</div>
+            <div class="connection-result">
+              <span class="then-badge">ENTONCES</span>
+              <span class="connection-text"
+                >impactamos positivamente la
+                <strong>Eficiencia del usuario</strong> (menos tiempo de espera)
+                y su <strong>Satisfacción</strong> (menos frustración) (Calidad
+                en Uso).</span
+              >
+            </div>
+          </div>
+
+          <div class="connection-item">
+            <div class="connection-header">
+              <span class="if-badge">SI</span>
+              <span class="connection-text"
+                >mejoramos la
+                <strong>Fiabilidad y la Seguridad</strong> (Calidad de
+                Producto)...</span
+              >
+            </div>
+            <div class="connection-arrow">↓</div>
+            <div class="connection-result">
+              <span class="then-badge">ENTONCES</span>
+              <span class="connection-text"
+                >impactamos positivamente la característica
+                <strong>Libre de Riesgo</strong> y la
+                <strong>Confianza</strong> (parte de la Satisfacción) (Calidad
+                en Uso).</span
+              >
+            </div>
+          </div>
+
+          <div class="connection-item">
+            <div class="connection-header">
+              <span class="if-badge">SI</span>
+              <span class="connection-text"
+                >mejoramos la <strong>Mantenibilidad</strong> (Calidad de
+                Producto)...</span
+              >
+            </div>
+            <div class="connection-arrow">↓</div>
+            <div class="connection-result">
+              <span class="then-badge">ENTONCES</span>
+              <span class="connection-text"
+                >podemos corregir errores más rápido, lo que mejora la
+                <strong>Eficacia y Disponibilidad</strong> para el usuario
+                (Calidad en Uso).</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight" style="margin-top: 40px">
+          <strong>💡 La conexión más importante del curso:</strong> "Nuestro
+          trabajo como ingenieros en las 8 características del producto no es un
+          fin en sí mismo. Lo hacemos para que el usuario, al final de la
+          cadena, tenga una experiencia de alta calidad en su contexto. La
+          Calidad de Producto es el medio, la Calidad en Uso es el fin."
+        </div>
+      </div>
+
+      <!-- Slide 5: Discusión Final -->
+      <div class="slide">
+        <h1>¿Técnicamente Perfecto, Prácticamente Inútil?</h1>
+        <p class="subtitle">Discusión Final - El Juicio del Usuario (15 min)</p>
+
+        <div class="case-study">
+          <h3>📋 Caso de Estudio</h3>
+          <div class="case-content">
+            <p>
+              Una empresa desarrolla un nuevo
+              <strong>sistema de gestión de proyectos</strong>. Es técnicamente
+              impecable: pasa todas las pruebas unitarias (Fiabilidad), es
+              increíblemente rápido (Rendimiento), el código es modular y fácil
+              de mantener (Mantenibilidad) y es muy seguro (Seguridad). Su
+              <strong>Calidad de Producto es altísima</strong>.
+            </p>
+
+            <div class="case-twist">
+              <p>
+                Se lanza a los empleados. Seis meses después,
+                <strong>nadie lo usa</strong>. La gente prefiere seguir usando
+                sus viejas hojas de cálculo de Excel.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="discussion-questions">
+          <h3>🤔 Preguntas para la clase:</h3>
+
+          <div class="question-card">
+            <div class="question-number">1</div>
+            <div class="question-text">
+              ¿Qué características de <strong>Calidad en Uso</strong> creen que
+              fallaron en este nuevo sistema?
+            </div>
+          </div>
+
+          <div class="question-card">
+            <div class="question-number">2</div>
+            <div class="question-text">
+              ¿Qué características de
+              <strong>Calidad de Producto</strong> (probablemente del área de
+              Usabilidad) se descuidaron durante el desarrollo y llevaron a este
+              fracaso?
+            </div>
+          </div>
+
+          <div class="question-card">
+            <div class="question-number">3</div>
+            <div class="question-text">
+              ¿Cómo podría un enfoque en la
+              <strong>Calidad en Uso</strong> desde el principio del proyecto
+              haber evitado este resultado?
+            </div>
+          </div>
+        </div>
+
+        <div class="teacher-notes">
+          <h4>📝 Puntos a desarrollar:</h4>
+          <p>
+            Guiar la discusión para que los alumnos concluyan que probablemente
+            la <strong>Satisfacción</strong> fue nula, la
+            <strong>Eficiencia</strong> era menor que la del método antiguo (era
+            más lento para ellos hacer su trabajo), y la
+            <strong>Eficacia</strong> era baja porque el sistema no se adaptaba
+            a su forma real de trabajar. Esto se debió a una falta de atención a
+            la <strong>Usabilidad</strong> (Aprendizaje, Operabilidad) durante
+            el desarrollo. La solución habría sido involucrar a los usuarios
+            finales desde el principio (prototipos, pruebas de usabilidad,
+            etc.).
+          </p>
+        </div>
+      </div>
+
+      <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">
+          ← Anterior
+        </button>
+        <div class="slide-counter">
+          <span id="currentSlide">1</span> / <span id="totalSlides">5</span>
+        </div>
+        <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">
+          Siguiente →
+        </button>
+      </div>
+    </div>
+
+    <script>
+      let currentSlideIndex = 0;
+      const slides = document.querySelectorAll(".slide");
+      const totalSlides = slides.length;
+
+      document.getElementById("totalSlides").textContent = totalSlides;
+
+      function showSlide(index) {
+        slides.forEach((slide) => slide.classList.remove("active"));
+        slides[index].classList.add("active");
+
+        document.getElementById("currentSlide").textContent = index + 1;
+        document.getElementById("prevBtn").disabled = index === 0;
+        document.getElementById("nextBtn").disabled = index === totalSlides - 1;
+
+        // Scroll to top smoothly when changing slides
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+
+      function changeSlide(direction) {
+        const newIndex = currentSlideIndex + direction;
+        if (newIndex >= 0 && newIndex < totalSlides) {
+          currentSlideIndex = newIndex;
+          showSlide(currentSlideIndex);
+        }
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") changeSlide(-1);
+        if (e.key === "ArrowRight") changeSlide(1);
+      });
+
+      // Initialize
+      showSlide(0);
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'97f433f813e111f1',t:'MTc1Nzg5ODE5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+
+
+
+
+  <script defer src="js/back-home.js"></script>
+  <script defer src="js/nav-inject.js"></script>
+  </body>
+</html>

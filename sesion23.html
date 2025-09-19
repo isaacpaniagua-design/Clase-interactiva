@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sesión 23: Calidad a Velocidad - El Enfoque Ágil</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 50%,
+          #f093fb 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+      }
+
+      .presentation-container {
+        max-width: 1200px;
+        width: 95%;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+
+      .slide {
+        display: none;
+        padding: 60px;
+        min-height: 700px;
+        animation: slideIn 0.5s ease-out;
+      }
+
+      .slide.active {
+        display: block;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .slide h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 20px;
+        line-height: 1.2;
+      }
+
+      .slide h2 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 30px;
+      }
+
+      .subtitle {
+        font-size: 1.4rem;
+        color: #718096;
+        margin-bottom: 40px;
+        font-style: italic;
+        line-height: 1.4;
+      }
+
+      .source {
+        background: #f7fafc;
+        padding: 20px;
+        border-left: 4px solid #667eea;
+        margin: 30px 0;
+        border-radius: 8px;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 60px;
+        background: #f8f9fa;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .nav-button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .nav-button:hover {
+        background: #5a67d8;
+        transform: translateY(-2px);
+      }
+
+      .nav-button:disabled {
+        background: #cbd5e0;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .slide-counter {
+        background: #667eea;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+      }
+
+      .teacher-notes {
+        background: #e6fffa;
+        border: 2px solid #38b2ac;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 30px 0;
+      }
+
+      .teacher-notes h4 {
+        color: #2c7a7b;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .teacher-notes p {
+        color: #2d3748;
+        line-height: 1.6;
+      }
+
+      .highlight {
+        background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+      }
+
+      .agile-banner {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 30px 0;
+        text-align: center;
+      }
+
+      .agile-banner h3 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+      }
+
+      .speed-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 20px 0;
+        font-size: 1.5rem;
+      }
+
+      .speed-bar {
+        width: 200px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .speed-fill {
+        width: 85%;
+        height: 100%;
+        background: linear-gradient(90deg, #48bb78 0%, #f093fb 100%);
+        animation: speedPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes speedPulse {
+        0%,
+        100% {
+          width: 85%;
+        }
+        50% {
+          width: 95%;
+        }
+      }
+
+      .principles-container {
+        margin: 30px 0;
+      }
+
+      .principle-card {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 25px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .principle-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+      }
+
+      .principle-card.whole-team::before {
+        background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
+      }
+
+      .principle-card.shift-left::before {
+        background: linear-gradient(90deg, #ed8936 0%, #dd6b20 100%);
+      }
+
+      .principle-card.working-software::before {
+        background: linear-gradient(90deg, #9f7aea 0%, #805ad5 100%);
+      }
+
+      .principle-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .principle-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .principle-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: white;
+        font-weight: bold;
+      }
+
+      .whole-team .principle-icon {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      }
+
+      .shift-left .principle-icon {
+        background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+      }
+
+      .working-software .principle-icon {
+        background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
+      }
+
+      .principle-title {
+        flex: 1;
+      }
+
+      .principle-title h3 {
+        font-size: 1.6rem;
+        color: #2d3748;
+        margin-bottom: 5px;
+      }
+
+      .principle-subtitle {
+        color: #718096;
+        font-style: italic;
+      }
+
+      .approach-comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin: 25px 0;
+      }
+
+      .approach-card {
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid #e2e8f0;
+      }
+
+      .traditional-approach {
+        background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+        border-color: #f56565;
+      }
+
+      .agile-approach {
+        background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+        border-color: #48bb78;
+      }
+
+      .approach-card h4 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: #2d3748;
+      }
+
+      .approach-card p {
+        color: #4a5568;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      .shift-left-timeline {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 15px;
+        margin: 25px 0;
+      }
+
+      .timeline-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin: 15px 0;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        border-left: 4px solid #ed8936;
+      }
+
+      .timeline-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .timeline-content {
+        flex: 1;
+      }
+
+      .timeline-content h5 {
+        color: #2d3748;
+        margin-bottom: 5px;
+        font-size: 1.1rem;
+      }
+
+      .timeline-content p {
+        color: #4a5568;
+        line-height: 1.5;
+      }
+
+      .culture-change-box {
+        background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 30px 0;
+        text-align: center;
+      }
+
+      .culture-change-box h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+      }
+
+      .culture-change-box p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        font-style: italic;
+      }
+
+      .scenario-box {
+        background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+        padding: 30px;
+        border-radius: 15px;
+        margin: 30px 0;
+        border-left: 5px solid #e17055;
+      }
+
+      .scenario-box h3 {
+        color: #2d3748;
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+      }
+
+      .scenario-box p {
+        color: #4a5568;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .conflict-points {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .conflict-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 15px;
+        border-radius: 10px;
+      }
+
+      .conflict-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .debate-question {
+        background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin: 30px 0;
+        text-align: center;
+      }
+
+      .debate-question h3 {
+        font-size: 1.6rem;
+        margin-bottom: 15px;
+      }
+
+      .debate-question p {
+        font-size: 1.2rem;
+        font-style: italic;
+        line-height: 1.5;
+      }
+
+      .debate-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin: 30px 0;
+      }
+
+      .debate-side {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        border: 3px solid #e2e8f0;
+        transition: all 0.3s ease;
+      }
+
+      .debate-side:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .debate-side.enemies {
+        border-color: #f56565;
+        background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+      }
+
+      .debate-side.coexist {
+        border-color: #48bb78;
+        background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+      }
+
+      .debate-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .debate-icon {
+        font-size: 2rem;
+      }
+
+      .debate-header h3 {
+        color: #2d3748;
+        font-size: 1.4rem;
+      }
+
+      .argument-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .argument-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+      }
+
+      .enemies .argument-item {
+        border-left-color: #f56565;
+      }
+
+      .coexist .argument-item {
+        border-left-color: #48bb78;
+      }
+
+      .argument-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      .argument-item p {
+        color: #4a5568;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .conclusion-box {
+        background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 30px 0;
+      }
+
+      .conclusion-box h3 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+      }
+
+      .conclusion-box p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 25px;
+      }
+
+      .key-insight {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 25px;
+        border-radius: 10px;
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+      }
+
+      .insight-icon {
+        font-size: 2rem;
+        flex-shrink: 0;
+      }
+
+      .insight-content h4 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        color: #fff;
+      }
+
+      .insight-content p {
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+
+      .practices-container {
+        margin: 30px 0;
+      }
+
+      .practice-card {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .practice-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+      }
+
+      .practice-card.tdd::before {
+        background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+      }
+
+      .practice-card.ci::before {
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+      }
+
+      .practice-card.dod::before {
+        background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+      }
+
+      .practice-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .practice-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .practice-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: white;
+        font-weight: bold;
+      }
+
+      .tdd .practice-icon {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+
+      .ci .practice-icon {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+
+      .dod .practice-icon {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      }
+
+      .practice-title {
+        flex: 1;
+      }
+
+      .practice-title h3 {
+        font-size: 1.6rem;
+        color: #2d3748;
+        margin-bottom: 5px;
+      }
+
+      .practice-subtitle {
+        color: #718096;
+        font-style: italic;
+      }
+
+      .practice-content {
+        margin-left: 75px;
+      }
+
+      .practice-content p {
+        color: #4a5568;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .tdd-cycle {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .tdd-cycle h4 {
+        color: #2d3748;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+      }
+
+      .cycle-steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+      }
+
+      .cycle-step {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border: 2px solid #e2e8f0;
+      }
+
+      .cycle-step.red {
+        border-color: #f56565;
+        background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+      }
+
+      .cycle-step.green {
+        border-color: #48bb78;
+        background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+      }
+
+      .cycle-step.refactor {
+        border-color: #ed8936;
+        background: linear-gradient(135deg, #fbd38d 0%, #f6ad55 100%);
+      }
+
+      .step-icon {
+        font-size: 2rem;
+        flex-shrink: 0;
+      }
+
+      .step-content h5 {
+        color: #2d3748;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+      }
+
+      .step-content p {
+        color: #4a5568;
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      .ci-flow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        flex-wrap: wrap;
+      }
+
+      .flow-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        border: 2px solid #4facfe;
+        min-width: 120px;
+      }
+
+      .flow-icon {
+        font-size: 1.5rem;
+      }
+
+      .flow-text {
+        font-size: 0.9rem;
+        color: #4a5568;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .flow-arrow {
+        font-size: 1.5rem;
+        color: #4facfe;
+        font-weight: bold;
+      }
+
+      .dod-example {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .dod-example h4 {
+        color: #2d3748;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+      }
+
+      .checklist {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .checklist-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px;
+        background: white;
+        border-radius: 8px;
+        border-left: 3px solid #43e97b;
+      }
+
+      .checkbox {
+        color: #43e97b;
+        font-size: 1.2rem;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .checklist-item span:last-child {
+        color: #4a5568;
+        line-height: 1.5;
+      }
+
+      .benefit-box {
+        background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        border-left: 4px solid #38b2ac;
+      }
+
+      .benefit-box strong {
+        color: #2c7a7b;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 30px;
+        }
+
+        .slide h1 {
+          font-size: 2.2rem;
+        }
+
+        .slide h2 {
+          font-size: 1.8rem;
+        }
+
+        .approach-comparison {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .navigation {
+          padding: 15px 30px;
+        }
+
+        .principle-header {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .speed-indicator {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .practice-content {
+          margin-left: 0;
+          margin-top: 20px;
+        }
+
+        .practice-header {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .cycle-steps {
+          grid-template-columns: 1fr;
+        }
+
+        .ci-flow {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .flow-arrow {
+          transform: rotate(90deg);
+        }
+
+        .debate-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .scenario-box {
+          padding: 20px;
+        }
+
+        .key-insight {
+          flex-direction: column;
+          gap: 15px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation-container">
+      <!-- Slide 1: Título -->
+      <div class="slide active">
+        <h1>Calidad a Velocidad: El Enfoque Ágil</h1>
+
+        <div class="agile-banner">
+          <h3>⚡ Velocidad + Calidad = ¿Posible?</h3>
+          <div class="speed-indicator">
+            <span>🐌 Lento</span>
+            <div class="speed-bar">
+              <div class="speed-fill"></div>
+            </div>
+            <span>🚀 Rápido</span>
+          </div>
+        </div>
+
+        <p class="subtitle">
+          ¿Cómo aseguramos la calidad cuando todo se mueve más rápido?
+        </p>
+
+        <div class="source">
+          <strong>📚 Fuentes Principales:</strong> "QA Lovers" - Víctor Gómez
+          Adán; "Ingeniería del software: un enfoque práctico" - Roger S.
+          Pressman.
+        </div>
+
+        <div class="teacher-notes">
+          <h4>📝 Notas para el docente:</h4>
+          <p>
+            Inicia la sesión contrastando con los modelos formales vistos:
+            "Hemos pasado semanas hablando de planes, procesos documentados y
+            fases estructuradas. Pero, ¿qué pasa en el mundo de los Sprints de
+            dos semanas, las entregas continuas y los requisitos cambiantes? Hoy
+            exploraremos cómo la calidad no solo sobrevive, sino que prospera en
+            el aparente 'caos' de la agilidad."
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 2: El Manifiesto de la Calidad Ágil -->
+      <div class="slide">
+        <h1>Un Cambio de Paradigma en la Calidad</h1>
+        <p class="subtitle">El Manifiesto de la Calidad Ágil</p>
+
+        <div class="highlight" style="margin-bottom: 30px">
+          <strong>Introducción:</strong> La agilidad no elimina la necesidad de
+          calidad; por el contrario, la exige a cada paso. La calidad ágil se
+          basa en principios que redefinen las responsabilidades y el enfoque.
+        </div>
+
+        <div class="principles-container">
+          <div class="principle-card whole-team">
+            <div class="principle-header">
+              <div class="principle-icon">👥</div>
+              <div class="principle-title">
+                <h3>Principio 1: Calidad de Todo el Equipo</h3>
+                <div class="principle-subtitle">Whole-Team Quality</div>
+              </div>
+            </div>
+
+            <div class="approach-comparison">
+              <div class="approach-card traditional-approach">
+                <h4>🏭 Enfoque Tradicional:</h4>
+                <p>
+                  La calidad es responsabilidad del departamento de QA. Los
+                  desarrolladores "lanzan el software por encima del muro" para
+                  que los testers lo revisen.
+                </p>
+              </div>
+
+              <div class="approach-card agile-approach">
+                <h4>🚀 Enfoque Ágil:</h4>
+                <p>
+                  La calidad es responsabilidad de <strong>TODOS</strong>.
+                  Desarrolladores, testers, dueños de producto, diseñadores,
+                  todos son responsables de construir un producto de calidad. El
+                  rol del "QA" ágil se convierte más en un coach o facilitador
+                  que en un simple ejecutor de pruebas.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="principle-card shift-left">
+            <div class="principle-header">
+              <div class="principle-icon">⬅️</div>
+              <div class="principle-title">
+                <h3>
+                  Principio 2: Prevenir Defectos es Mejor que Encontrarlos
+                </h3>
+                <div class="principle-subtitle">Shift-Left</div>
+              </div>
+            </div>
+
+            <div class="approach-comparison">
+              <div class="approach-card traditional-approach">
+                <h4>🏭 Enfoque Tradicional:</h4>
+                <p>
+                  El testing es una fase que ocurre al final del ciclo de
+                  desarrollo.
+                </p>
+              </div>
+
+              <div class="approach-card agile-approach">
+                <h4>🚀 Enfoque Ágil:</h4>
+                <p>
+                  Las actividades de calidad se "mueven a la izquierda"
+                  (Shift-Left) en el ciclo de vida. Se integran desde el primer
+                  momento:
+                </p>
+              </div>
+            </div>
+
+            <div class="shift-left-timeline">
+              <div class="timeline-item">
+                <div class="timeline-icon">📋</div>
+                <div class="timeline-content">
+                  <h5>Calidad en los Requisitos:</h5>
+                  <p>
+                    Conversaciones constantes (3 Amigos: Dev, QA, PO) para
+                    asegurar que las historias de usuario sean claras y
+                    probables.
+                  </p>
+                </div>
+              </div>
+
+              <div class="timeline-item">
+                <div class="timeline-icon">💻</div>
+                <div class="timeline-content">
+                  <h5>Calidad en el Código:</h5>
+                  <p>Revisiones de código, programación en pares.</p>
+                </div>
+              </div>
+
+              <div class="timeline-item">
+                <div class="timeline-icon">🔧</div>
+                <div class="timeline-content">
+                  <h5>Calidad en la Construcción:</h5>
+                  <p>Pruebas unitarias y de integración.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="principle-card working-software">
+            <div class="principle-header">
+              <div class="principle-icon">⚙️</div>
+              <div class="principle-title">
+                <h3>
+                  Principio 3: Software Funcionando sobre Documentación
+                  Extensiva
+                </h3>
+                <div class="principle-subtitle">
+                  Working Software over Comprehensive Documentation
+                </div>
+              </div>
+            </div>
+
+            <div class="approach-comparison">
+              <div class="approach-card traditional-approach">
+                <h4>🏭 Enfoque Tradicional:</h4>
+                <p>
+                  Se generan planes de prueba de 100 páginas antes de ejecutar
+                  una sola prueba.
+                </p>
+              </div>
+
+              <div class="approach-card agile-approach">
+                <h4>🚀 Enfoque Ágil:</h4>
+                <p>
+                  La evidencia principal de la calidad es el propio software
+                  funcionando correctamente. La documentación se mantiene ligera
+                  y centrada en el valor. Se prefieren los casos de prueba
+                  ejecutables (código) sobre los documentos estáticos.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="culture-change-box">
+          <h3>🔄 El Cambio Cultural Más Grande</h3>
+          <p>
+            "En agilidad, si un bug llega a producción, no es 'culpa de QA'. Es
+            un fallo del equipo. Esta responsabilidad compartida obliga a todos
+            a pensar en la calidad desde el principio."
+          </p>
+        </div>
+
+        <div class="teacher-notes">
+          <h4>📝 Puntos a desarrollar:</h4>
+          <p>
+            "El cambio más grande es cultural. En agilidad, si un bug llega a
+            producción, no es 'culpa de QA'. Es un fallo del equipo. Esta
+            responsabilidad compartida obliga a todos a pensar en la calidad
+            desde el principio."
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 3: Prácticas Clave de Calidad Ágil -->
+      <div class="slide">
+        <h1>Herramientas para Construir Calidad en el Proceso</h1>
+        <p class="subtitle">Prácticas Clave de Calidad Ágil</p>
+
+        <div class="highlight" style="margin-bottom: 30px">
+          <strong>Concepto:</strong> Estas tres prácticas (TDD, CI, DoD) no son
+          opcionales en un entorno ágil maduro; son el motor que permite
+          entregar software de alta calidad a alta velocidad de forma
+          sostenible.
+        </div>
+
+        <div class="practices-container">
+          <div class="practice-card tdd">
+            <div class="practice-header">
+              <div class="practice-icon">🔄</div>
+              <div class="practice-title">
+                <h3>1. Desarrollo Guiado por Pruebas (TDD)</h3>
+                <div class="practice-subtitle">Test-Driven Development</div>
+              </div>
+            </div>
+
+            <div class="practice-content">
+              <p>
+                <strong>Concepto:</strong> Un ciclo de desarrollo donde se
+                escribe una prueba automatizada que falla antes de escribir el
+                código de producción que la haga pasar.
+              </p>
+
+              <div class="tdd-cycle">
+                <h4>🔴 El Ciclo Rojo-Verde-Refactor:</h4>
+                <div class="cycle-steps">
+                  <div class="cycle-step red">
+                    <div class="step-icon">🔴</div>
+                    <div class="step-content">
+                      <h5>Rojo</h5>
+                      <p>
+                        Escribir una prueba unitaria para una nueva
+                        funcionalidad. Ejecutarla y verla fallar (rojo).
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="cycle-step green">
+                    <div class="step-icon">🟢</div>
+                    <div class="step-content">
+                      <h5>Verde</h5>
+                      <p>
+                        Escribir el código más simple posible para que la prueba
+                        pase (verde).
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="cycle-step refactor">
+                    <div class="step-icon">🔧</div>
+                    <div class="step-content">
+                      <h5>Refactor</h5>
+                      <p>
+                        Limpiar y optimizar el código escrito, asegurándose de
+                        que todas las pruebas sigan pasando.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="benefit-box">
+                <strong>💡 Beneficio:</strong> Garantiza una cobertura de
+                pruebas altísima y un diseño de código más simple y modular.
+              </div>
+            </div>
+          </div>
+
+          <div class="practice-card ci">
+            <div class="practice-header">
+              <div class="practice-icon">🔗</div>
+              <div class="practice-title">
+                <h3>2. Integración Continua (CI)</h3>
+                <div class="practice-subtitle">Continuous Integration</div>
+              </div>
+            </div>
+
+            <div class="practice-content">
+              <p>
+                <strong>Concepto:</strong> Una práctica donde los
+                desarrolladores integran su código en un repositorio compartido
+                varias veces al día. Cada integración es verificada por una
+                construcción (build) automatizada que compila el código y
+                ejecuta las pruebas.
+              </p>
+
+              <div class="ci-flow">
+                <div class="flow-step">
+                  <div class="flow-icon">👨‍💻</div>
+                  <div class="flow-text">Desarrollador sube código</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                  <div class="flow-icon">⚙️</div>
+                  <div class="flow-text">Build automático se ejecuta</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                  <div class="flow-icon">🧪</div>
+                  <div class="flow-text">Pruebas se ejecutan</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                  <div class="flow-icon">✅</div>
+                  <div class="flow-text">Feedback inmediato</div>
+                </div>
+              </div>
+
+              <div class="benefit-box">
+                <strong>💡 Beneficio:</strong> Detecta errores de integración de
+                forma inmediata. Si un desarrollador sube un cambio que rompe
+                algo, el build falla y todo el equipo lo sabe en minutos, no en
+                semanas. Es la red de seguridad del equipo.
+              </div>
+            </div>
+          </div>
+
+          <div class="practice-card dod">
+            <div class="practice-header">
+              <div class="practice-icon">✅</div>
+              <div class="practice-title">
+                <h3>3. Definición de "Hecho" (DoD)</h3>
+                <div class="practice-subtitle">Definition of Done</div>
+              </div>
+            </div>
+
+            <div class="practice-content">
+              <p>
+                <strong>Concepto:</strong> Un checklist acordado por todo el
+                equipo que una historia de usuario debe cumplir para ser
+                considerada 100% terminada. Es un contrato de calidad explícito.
+              </p>
+
+              <div class="dod-example">
+                <h4>📋 Ejemplo de un DoD:</h4>
+                <div class="checklist">
+                  <div class="checklist-item">
+                    <span class="checkbox">☐</span>
+                    <span>El código está escrito y subido al repositorio.</span>
+                  </div>
+                  <div class="checklist-item">
+                    <span class="checkbox">☐</span>
+                    <span
+                      >Las pruebas unitarias cubren el 80% del nuevo código y
+                      todas pasan.</span
+                    >
+                  </div>
+                  <div class="checklist-item">
+                    <span class="checkbox">☐</span>
+                    <span>Se han escrito pruebas de aceptación.</span>
+                  </div>
+                  <div class="checklist-item">
+                    <span class="checkbox">☐</span>
+                    <span
+                      >El código ha sido revisado por un compañero (Peer
+                      Review).</span
+                    >
+                  </div>
+                  <div class="checklist-item">
+                    <span class="checkbox">☐</span>
+                    <span
+                      >La funcionalidad ha sido probada en el entorno de
+                      Staging.</span
+                    >
+                  </div>
+                  <div class="checklist-item">
+                    <span class="checkbox">☐</span>
+                    <span>La documentación necesaria ha sido actualizada.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="benefit-box">
+                <strong>💡 Beneficio:</strong> Crea transparencia y un estándar
+                de calidad consistente para cada incremento del producto. Evita
+                el clásico "por mi parte ya está terminado".
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="teacher-notes">
+          <h4>📝 Puntos a desarrollar:</h4>
+          <p>
+            "Estas tres prácticas (TDD, CI, DoD) no son opcionales en un entorno
+            ágil maduro; son el motor que permite entregar software de alta
+            calidad a alta velocidad de forma sostenible."
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 4: El Gran Debate -->
+      <div class="slide">
+        <h1>¿Amigos o Enemigos?</h1>
+        <p class="subtitle">Modelos Formales vs. Agilidad</p>
+
+        <div class="scenario-box">
+          <h3>🎭 El Escenario:</h3>
+          <p>
+            Una empresa certificada en <strong>CMMI Nivel 3</strong> (con
+            procesos bien definidos y documentados) decide adoptar
+            <strong>Scrum</strong> para acelerar sus entregas.
+          </p>
+          <div class="conflict-points">
+            <div class="conflict-item">
+              <span class="conflict-icon">😤</span>
+              <span
+                >Los equipos ágiles se quejan de que los procesos de CMMI son
+                "demasiado burocráticos" y los "hacen lentos".</span
+              >
+            </div>
+            <div class="conflict-item">
+              <span class="conflict-icon">😠</span>
+              <span
+                >Los auditores de CMMI se quejan de que los equipos ágiles "no
+                documentan nada" y son "caóticos".</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="debate-question">
+          <h3>🤔 Pregunta para el Debate:</h3>
+          <p>
+            "¿Son los modelos formales como CMMI e ISO enemigos de la agilidad?
+            ¿O pueden coexistir?"
+          </p>
+        </div>
+
+        <div class="debate-container">
+          <div class="debate-side enemies">
+            <div class="debate-header">
+              <div class="debate-icon">⚔️</div>
+              <h3>Argumentos "Enemigos"</h3>
+            </div>
+
+            <div class="argument-list">
+              <div class="argument-item">
+                <div class="argument-icon">🔒</div>
+                <p>
+                  La agilidad valora la
+                  <strong>flexibilidad y la adaptación</strong>, mientras que
+                  los modelos formales parecen valorar la
+                  <strong>rigidez y el seguimiento de un plan</strong>.
+                </p>
+              </div>
+
+              <div class="argument-item">
+                <div class="argument-icon">📚</div>
+                <p>
+                  La <strong>documentación exhaustiva de CMMI</strong> choca con
+                  el principio ágil de
+                  <strong
+                    >"software funcionando sobre documentación
+                    extensiva"</strong
+                  >.
+                </p>
+              </div>
+
+              <div class="argument-item">
+                <div class="argument-icon">⏰</div>
+                <p>
+                  Los <strong>ciclos de aprobación largos</strong> de un proceso
+                  formal pueden ser un cuello de botella en un
+                  <strong>sprint de dos semanas</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="debate-side coexist">
+            <div class="debate-header">
+              <div class="debate-icon">🤝</div>
+              <h3>Argumentos "Pueden Coexistir"</h3>
+            </div>
+
+            <div class="argument-list">
+              <div class="argument-item">
+                <div class="argument-icon">🎯</div>
+                <p>
+                  <strong
+                    >CMMI/ISO dicen "QUÉ" hacer, no "CÓMO" hacerlo.</strong
+                  >
+                  Un proceso de CMMI para la gestión de requisitos (REQM) se
+                  puede implementar de forma ágil con historias de usuario y
+                  product backlog.
+                </p>
+              </div>
+
+              <div class="argument-item">
+                <div class="argument-icon">✅</div>
+                <p>
+                  El <strong>DoD de un equipo ágil</strong> es una forma de
+                  implementar la
+                  <strong>Verificación y la Validación</strong> (VER y VAL de
+                  CMMI).
+                </p>
+              </div>
+
+              <div class="argument-item">
+                <div class="argument-icon">🔄</div>
+                <p>
+                  La <strong>Integración Continua</strong> es una implementación
+                  automatizada y eficiente del
+                  <strong>Aseguramiento de Calidad</strong> de Procesos y
+                  Productos (PPQA de CMMI).
+                </p>
+              </div>
+
+              <div class="argument-item">
+                <div class="argument-icon">🔧</div>
+                <p>
+                  La clave está en
+                  <strong>adaptar (tailoring) inteligentemente</strong> los
+                  procesos formales para que se ajusten al ciclo de vida ágil,
+                  sin perder su intención original.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="conclusion-box">
+          <h3>🎯 Conclusión del Debate:</h3>
+          <p>
+            <strong>"Agilidad Disciplinada"</strong> - Lejos de ser enemigos, la
+            agilidad y los modelos formales pueden ser grandes aliados. Los
+            modelos formales proveen una estructura y disciplina que a veces
+            falta en equipos ágiles inmaduros. La agilidad provee los mecanismos
+            para implementar esos objetivos de disciplina de una forma ligera,
+            rápida y centrada en la entrega de valor.
+          </p>
+
+          <div class="key-insight">
+            <div class="insight-icon">💡</div>
+            <div class="insight-content">
+              <h4>La Clave:</h4>
+              <p>
+                CMMI e ISO definen el <strong>'QUÉ'</strong> (los objetivos de
+                calidad que una organización madura debe alcanzar), mientras que
+                la agilidad ofrece un <strong>'CÓMO'</strong> muy eficiente y
+                moderno para lograr esos objetivos.
+              </p>
+              <p>
+                <strong>Ejemplo:</strong> CMMI exige un proceso para la 'Mejora
+                Continua'; Scrum lo implementa a través de la 'Retrospectiva' al
+                final de cada Sprint.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="teacher-notes">
+          <h4>📝 Tiempo de debate: 20 minutos</h4>
+          <p>
+            Facilita la discusión permitiendo que los estudiantes argumenten
+            ambos lados. Guía hacia la conclusión de que la integración
+            inteligente es la respuesta, no la elección de uno sobre el otro.
+          </p>
+        </div>
+      </div>
+
+      <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">
+          ← Anterior
+        </button>
+        <div class="slide-counter">
+          <span id="currentSlide">1</span> / <span id="totalSlides">4</span>
+        </div>
+        <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">
+          Siguiente →
+        </button>
+      </div>
+    </div>
+
+    <script>
+      let currentSlideIndex = 0;
+      const slides = document.querySelectorAll(".slide");
+      const totalSlides = slides.length;
+
+      document.getElementById("totalSlides").textContent = totalSlides;
+
+      function showSlide(index) {
+        slides.forEach((slide) => slide.classList.remove("active"));
+        slides[index].classList.add("active");
+
+        document.getElementById("currentSlide").textContent = index + 1;
+        document.getElementById("prevBtn").disabled = index === 0;
+        document.getElementById("nextBtn").disabled = index === totalSlides - 1;
+
+        // Scroll to top smoothly when changing slides
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+
+      function changeSlide(direction) {
+        const newIndex = currentSlideIndex + direction;
+        if (newIndex >= 0 && newIndex < totalSlides) {
+          currentSlideIndex = newIndex;
+          showSlide(currentSlideIndex);
+        }
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") changeSlide(-1);
+        if (e.key === "ArrowRight") changeSlide(1);
+      });
+
+      // Initialize
+      showSlide(0);
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'97f44f1293cd9d92',t:'MTc1Nzg5OTMwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+
+
+
+
+  <script defer src="js/back-home.js"></script>
+  <script defer src="js/nav-inject.js"></script>
+  </body>
+</html>

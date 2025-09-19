@@ -1,0 +1,1282 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documento Final Integrado - Proyecto de Certificación</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Times New Roman", serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        padding: 20px;
+        z-index: 1000;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+      }
+
+      .sidebar h2 {
+        margin-bottom: 30px;
+        font-size: 1.2em;
+        text-align: center;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        padding-bottom: 15px;
+      }
+
+      .sidebar button {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .sidebar button.active {
+        background: rgba(255, 255, 255, 0.4);
+        font-weight: bold;
+      }
+
+      .nav-section {
+        margin: 20px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+        padding-top: 20px;
+      }
+
+      .nav-section h3 {
+        font-size: 14px;
+        margin-bottom: 15px;
+        color: #e8f4f8;
+      }
+
+      .nav-button {
+        text-align: left;
+        font-size: 12px;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+
+      .main-content {
+        margin-left: 280px;
+        padding: 20px;
+        min-height: 100vh;
+      }
+
+      .document {
+        background: white;
+        max-width: 210mm;
+        margin: 0 auto;
+        padding: 25mm;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      .document-section {
+        display: none;
+        animation: fadeIn 0.3s ease-in;
+      }
+
+      .document-section.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        border-bottom: 3px solid #1e3c72;
+        padding-bottom: 25px;
+      }
+
+      .header h1 {
+        color: #1e3c72;
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+
+      .header .subtitle {
+        color: #666;
+        font-size: 16px;
+        font-style: italic;
+        margin-bottom: 15px;
+      }
+
+      .header .meta {
+        font-size: 12px;
+        color: #888;
+        line-height: 1.4;
+      }
+
+      .section-header {
+        color: #1e3c72;
+        font-size: 20px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e8f4f8;
+      }
+
+      .subsection-header {
+        color: #2a5298;
+        font-size: 16px;
+        margin: 25px 0 15px 0;
+        font-weight: bold;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 25px;
+      }
+
+      .form-field {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-field.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .form-field label {
+        font-weight: bold;
+        color: #1e3c72;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .form-field input,
+      .form-field select,
+      .form-field textarea {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 13px;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-field input:focus,
+      .form-field select:focus,
+      .form-field textarea:focus {
+        outline: none;
+        border-color: #1e3c72;
+        box-shadow: 0 0 0 2px rgba(30, 60, 114, 0.1);
+      }
+
+      .content-area {
+        min-height: 200px;
+        padding: 20px;
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        background: #fafafa;
+        margin: 20px 0;
+        position: relative;
+      }
+
+      .content-area:focus-within {
+        border-color: #1e3c72;
+        background: white;
+      }
+
+      .content-area textarea {
+        width: 100%;
+        min-height: 180px;
+        border: none;
+        background: transparent;
+        font-family: inherit;
+        font-size: 13px;
+        line-height: 1.6;
+        resize: vertical;
+      }
+
+      .content-area textarea:focus {
+        outline: none;
+      }
+
+      .content-area .placeholder {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: #999;
+        font-style: italic;
+        pointer-events: none;
+        font-size: 13px;
+      }
+
+      .info-box {
+        background: #e8f4f8;
+        border-left: 4px solid #1e3c72;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+      }
+
+      .info-box.warning {
+        background: #fff3cd;
+        border-left-color: #ffc107;
+      }
+
+      .info-box.success {
+        background: #d4edda;
+        border-left-color: #28a745;
+      }
+
+      .progress-indicator {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #1e3c72, #2a5298);
+        transition: width 0.3s ease;
+      }
+
+      .progress-text {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .table-container {
+        overflow-x: auto;
+        margin: 20px 0;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      .data-table th {
+        background: #1e3c72;
+        color: white;
+        padding: 12px 8px;
+        text-align: left;
+        font-weight: bold;
+      }
+
+      .data-table td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #ddd;
+        vertical-align: top;
+      }
+
+      .data-table tr:nth-child(even) {
+        background: #f8f9fa;
+      }
+
+      .data-table tr:hover {
+        background: #e8f4f8;
+      }
+
+      .attachment-area {
+        border: 2px dashed #1e3c72;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        margin: 20px 0;
+        background: #f8f9fa;
+      }
+
+      .attachment-area:hover {
+        background: #e8f4f8;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      /* Estilos para impresión */
+      @media print {
+        body {
+          background: white;
+          font-size: 11pt;
+          line-height: 1.4;
+        }
+
+        .sidebar {
+          display: none !important;
+        }
+
+        .main-content {
+          margin-left: 0 !important;
+          padding: 0 !important;
+        }
+
+        .document {
+          box-shadow: none;
+          border-radius: 0;
+          max-width: none;
+          padding: 15mm;
+          margin: 0;
+        }
+
+        .document-section {
+          display: block !important;
+          page-break-before: always;
+        }
+
+        .document-section:first-child {
+          page-break-before: avoid;
+        }
+
+        .header h1 {
+          font-size: 18pt;
+        }
+
+        .section-header {
+          font-size: 14pt;
+        }
+
+        .content-area {
+          border: 1px solid #ddd;
+          background: white;
+        }
+
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+          border: none;
+          border-bottom: 1px solid #ddd;
+          background: transparent;
+          font-size: 10pt;
+        }
+
+        .progress-indicator {
+          display: none;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 15mm;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h2>📋 Documento Final</h2>
+
+      <button onclick="saveDocument()">💾 Guardar Documento</button>
+      <button onclick="loadDocument()">📂 Cargar Documento</button>
+      <button onclick="exportToPDF()">📄 Exportar a PDF</button>
+      <button onclick="printDocument()">🖨️ Imprimir</button>
+
+      <div class="nav-section">
+        <h3>📑 Secciones</h3>
+        <button
+          class="nav-button active"
+          onclick="showSection('datos-generales')"
+        >
+          1. Datos Generales
+        </button>
+        <button class="nav-button" onclick="showSection('diagnostico')">
+          2. Diagnóstico y Cultura
+        </button>
+        <button class="nav-button" onclick="showSection('gap-analysis')">
+          3. Gap Analysis
+        </button>
+        <button class="nav-button" onclick="showSection('roadmap')">
+          4. Roadmap
+        </button>
+        <button class="nav-button" onclick="showSection('gestion-cambio')">
+          5. Gestión del Cambio
+        </button>
+        <button class="nav-button" onclick="showSection('conclusiones')">
+          6. Conclusiones
+        </button>
+        <button class="nav-button" onclick="showSection('anexos')">
+          7. Anexos
+        </button>
+      </div>
+
+      <div class="nav-section">
+        <h3>📊 Progreso</h3>
+        <div class="progress-indicator">
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              id="progress-fill"
+              style="width: 14%"
+            ></div>
+          </div>
+          <div class="progress-text" id="progress-text">1 de 7 secciones</div>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <h3>🔧 Herramientas</h3>
+        <button onclick="validateDocument()">✅ Validar Documento</button>
+        <button onclick="generateSummary()">📈 Generar Resumen</button>
+        <button onclick="checkCompleteness()">📋 Verificar Completitud</button>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="document">
+        <!-- Sección 1: Datos Generales -->
+        <div class="document-section active" id="datos-generales">
+          <div class="header">
+            <h1>Documento Final Integrado</h1>
+            <div class="subtitle">Proyecto de Certificación de Calidad</div>
+            <div class="meta">
+              <strong>Cuándo presentarlo:</strong> Semana 14–15 (Exposiciones
+              Finales)<br />
+              <strong>Nota:</strong> Este documento integra todos los
+              entregables previos del proyecto de equipo
+            </div>
+          </div>
+
+          <div class="section-header">1. Datos Generales</div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Empresa Caso:</label>
+              <input
+                type="text"
+                id="empresa"
+                placeholder="Nombre de la empresa analizada..."
+              />
+            </div>
+            <div class="form-field">
+              <label>Equipo de Trabajo:</label>
+              <input
+                type="text"
+                id="equipo"
+                placeholder="Nombres de los integrantes..."
+              />
+            </div>
+            <div class="form-field">
+              <label>Fecha de Presentación:</label>
+              <input type="date" id="fecha_presentacion" />
+            </div>
+            <div class="form-field">
+              <label>Versión del Documento:</label>
+              <select id="version">
+                <option value="1.0">1.0 - Versión inicial</option>
+                <option value="1.1">1.1 - Revisión menor</option>
+                <option value="2.0">2.0 - Versión final</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>Profesor/Instructor:</label>
+              <input
+                type="text"
+                id="profesor"
+                placeholder="Nombre del profesor..."
+              />
+            </div>
+            <div class="form-field">
+              <label>Materia/Curso:</label>
+              <input
+                type="text"
+                id="materia"
+                placeholder="Nombre de la materia..."
+              />
+            </div>
+          </div>
+
+          <div class="subsection-header">Resumen Ejecutivo</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Escriba un resumen ejecutivo del proyecto (máximo 300 palabras)...
+            </div>
+            <textarea id="resumen_ejecutivo" placeholder=""></textarea>
+          </div>
+
+          <div class="info-box">
+            <strong>💡 Instrucciones:</strong> Complete todos los campos de
+            datos generales. El resumen ejecutivo debe incluir el objetivo del
+            proyecto, la empresa analizada, y los principales hallazgos y
+            recomendaciones.
+          </div>
+        </div>
+
+        <!-- Sección 2: Diagnóstico -->
+        <div class="document-section" id="diagnostico">
+          <div class="section-header">
+            2. Diagnóstico Inicial y Cultura de Calidad
+          </div>
+
+          <div class="subsection-header">
+            Contexto Actual de la Organización
+          </div>
+          <div class="content-area">
+            <div class="placeholder">
+              Describa el contexto actual de la empresa, su sector, tamaño,
+              estructura organizacional...
+            </div>
+            <textarea id="contexto_actual" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Problemas Detectados</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Liste y describa los principales problemas de calidad
+              identificados en la organización...
+            </div>
+            <textarea id="problemas_detectados" placeholder=""></textarea>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Nivel de Madurez Estimado:</label>
+              <select id="nivel_madurez">
+                <option value="">Seleccionar nivel...</option>
+                <option value="Inicial">Nivel 1 - Inicial</option>
+                <option value="Gestionado">Nivel 2 - Gestionado</option>
+                <option value="Definido">Nivel 3 - Definido</option>
+                <option value="Cuantitativamente Gestionado">
+                  Nivel 4 - Cuantitativamente Gestionado
+                </option>
+                <option value="Optimizado">Nivel 5 - Optimizado</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>Modelo de Calidad Propuesto:</label>
+              <select id="modelo_propuesto">
+                <option value="">Seleccionar modelo...</option>
+                <option value="ISO 9001">ISO 9001</option>
+                <option value="CMMI">CMMI</option>
+                <option value="MoProSoft">MoProSoft</option>
+                <option value="ISO 27001">ISO 27001</option>
+                <option value="ITIL">ITIL</option>
+                <option value="Six Sigma">Six Sigma</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="subsection-header">
+            Justificación del Modelo Seleccionado
+          </div>
+          <div class="content-area">
+            <div class="placeholder">
+              Justifique por qué el modelo seleccionado es el más adecuado para
+              la organización...
+            </div>
+            <textarea id="justificacion_modelo" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Cultura de Calidad y Gurús</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Analice la cultura de calidad actual y su relación con las
+              filosofías de Deming, Juran, Crosby e Ishikawa...
+            </div>
+            <textarea id="cultura_calidad" placeholder=""></textarea>
+          </div>
+
+          <div class="info-box warning">
+            <strong>⚠️ Importante:</strong> Esta sección debe integrar el
+            diagnóstico realizado en entregas anteriores. Asegúrese de incluir
+            evidencias y datos concretos.
+          </div>
+        </div>
+
+        <!-- Sección 3: Gap Analysis -->
+        <div class="document-section" id="gap-analysis">
+          <div class="section-header">3. Gap Analysis</div>
+
+          <div class="subsection-header">Resumen de Brechas Identificadas</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Proporcione un resumen de las principales brechas encontradas
+              entre el estado actual y el modelo de referencia...
+            </div>
+            <textarea id="resumen_brechas" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Tabla de Brechas Detallada</div>
+          <div class="info-box">
+            <strong>📋 Instrucciones:</strong> Copie aquí la tabla completa de
+            brechas del Anexo 3, incluyendo todas las áreas analizadas,
+            evidencias actuales, brechas identificadas y acciones recomendadas.
+          </div>
+
+          <div class="content-area" style="min-height: 300px">
+            <div class="placeholder">
+              Pegue aquí la tabla completa del Gap Analysis realizado
+              anteriormente...
+            </div>
+            <textarea id="tabla_brechas" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Priorización de Brechas</div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Brechas Críticas:</label>
+              <input
+                type="number"
+                id="brechas_criticas"
+                min="0"
+                placeholder="0"
+              />
+            </div>
+            <div class="form-field">
+              <label>Brechas de Alta Prioridad:</label>
+              <input type="number" id="brechas_altas" min="0" placeholder="0" />
+            </div>
+            <div class="form-field">
+              <label>Brechas de Media Prioridad:</label>
+              <input
+                type="number"
+                id="brechas_medias"
+                min="0"
+                placeholder="0"
+              />
+            </div>
+            <div class="form-field">
+              <label>Brechas de Baja Prioridad:</label>
+              <input type="number" id="brechas_bajas" min="0" placeholder="0" />
+            </div>
+          </div>
+
+          <div class="subsection-header">Análisis de Impacto</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Analice el impacto de las brechas identificadas en la operación
+              actual de la organización...
+            </div>
+            <textarea id="analisis_impacto" placeholder=""></textarea>
+          </div>
+        </div>
+
+        <!-- Sección 4: Roadmap -->
+        <div class="document-section" id="roadmap">
+          <div class="section-header">4. Roadmap de Implementación</div>
+
+          <div class="subsection-header">
+            Estrategia General de Implementación
+          </div>
+          <div class="content-area">
+            <div class="placeholder">
+              Describa la estrategia general para implementar las mejoras
+              propuestas...
+            </div>
+            <textarea id="estrategia_implementacion" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Cronograma de Fases</div>
+          <div class="info-box">
+            <strong>📅 Instrucciones:</strong> Incluya aquí el cronograma
+            completo del Anexo 4, con todas las fases, actividades, responsables
+            y fechas.
+          </div>
+
+          <div class="content-area" style="min-height: 300px">
+            <div class="placeholder">
+              Copie aquí el roadmap completo con todas las fases y actividades
+              planificadas...
+            </div>
+            <textarea id="cronograma_fases" placeholder=""></textarea>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Duración Total Estimada:</label>
+              <input
+                type="text"
+                id="duracion_total"
+                placeholder="Ej: 12 meses"
+              />
+            </div>
+            <div class="form-field">
+              <label>Presupuesto Estimado:</label>
+              <input
+                type="text"
+                id="presupuesto"
+                placeholder="Ej: $50,000 USD"
+              />
+            </div>
+            <div class="form-field">
+              <label>Recursos Humanos Requeridos:</label>
+              <input
+                type="number"
+                id="recursos_humanos"
+                min="1"
+                placeholder="5"
+              />
+            </div>
+            <div class="form-field">
+              <label>Hitos Principales:</label>
+              <input
+                type="number"
+                id="hitos_principales"
+                min="1"
+                placeholder="4"
+              />
+            </div>
+          </div>
+
+          <div class="subsection-header">Riesgos y Mitigación</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Identifique los principales riesgos del proyecto y las estrategias
+              de mitigación...
+            </div>
+            <textarea id="riesgos_mitigacion" placeholder=""></textarea>
+          </div>
+        </div>
+
+        <!-- Sección 5: Gestión del Cambio -->
+        <div class="document-section" id="gestion-cambio">
+          <div class="section-header">5. Plan de Gestión del Cambio</div>
+
+          <div class="subsection-header">
+            Estrategia de Comunicación Interna
+          </div>
+          <div class="content-area">
+            <div class="placeholder">
+              Describa la estrategia para comunicar los cambios a toda la
+              organización...
+            </div>
+            <textarea id="estrategia_comunicacion" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Plan de Capacitación</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Detalle el plan de capacitación para el personal en los nuevos
+              procesos y herramientas...
+            </div>
+            <textarea id="plan_capacitacion" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Manejo de Resistencia al Cambio</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Identifique las posibles fuentes de resistencia y las estrategias
+              para manejarlas...
+            </div>
+            <textarea id="resistencia_cambio" placeholder=""></textarea>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Stakeholders Clave:</label>
+              <input type="number" id="stakeholders" min="1" placeholder="8" />
+            </div>
+            <div class="form-field">
+              <label>Sesiones de Capacitación:</label>
+              <input
+                type="number"
+                id="sesiones_capacitacion"
+                min="1"
+                placeholder="12"
+              />
+            </div>
+            <div class="form-field">
+              <label>Canales de Comunicación:</label>
+              <input
+                type="number"
+                id="canales_comunicacion"
+                min="1"
+                placeholder="4"
+              />
+            </div>
+            <div class="form-field">
+              <label>Tiempo de Adaptación:</label>
+              <input
+                type="text"
+                id="tiempo_adaptacion"
+                placeholder="Ej: 3-6 meses"
+              />
+            </div>
+          </div>
+
+          <div class="subsection-header">Indicadores de Adopción</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Defina los indicadores que medirán el éxito de la adopción del
+              cambio...
+            </div>
+            <textarea id="indicadores_adopcion" placeholder=""></textarea>
+          </div>
+        </div>
+
+        <!-- Sección 6: Conclusiones -->
+        <div class="document-section" id="conclusiones">
+          <div class="section-header">
+            6. Conclusiones y Beneficios Esperados
+          </div>
+
+          <div class="subsection-header">Resumen de Hallazgos</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Resuma los principales hallazgos del análisis realizado...
+            </div>
+            <textarea id="resumen_hallazgos" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Fortalezas Identificadas</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Liste las principales fortalezas de la organización en términos de
+              calidad...
+            </div>
+            <textarea id="fortalezas" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Riesgos del Proyecto</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Identifique los principales riesgos que podrían afectar el éxito
+              del proyecto...
+            </div>
+            <textarea id="riesgos_proyecto" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Beneficios Esperados</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Describa los beneficios cuantitativos y cualitativos esperados de
+              la certificación...
+            </div>
+            <textarea id="beneficios_esperados" placeholder=""></textarea>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>ROI Estimado (%):</label>
+              <input
+                type="number"
+                id="roi_estimado"
+                min="0"
+                step="0.1"
+                placeholder="15.5"
+              />
+            </div>
+            <div class="form-field">
+              <label>Tiempo de Recuperación:</label>
+              <input
+                type="text"
+                id="tiempo_recuperacion"
+                placeholder="Ej: 18 meses"
+              />
+            </div>
+            <div class="form-field">
+              <label>Reducción de Defectos (%):</label>
+              <input
+                type="number"
+                id="reduccion_defectos"
+                min="0"
+                max="100"
+                placeholder="30"
+              />
+            </div>
+            <div class="form-field">
+              <label>Mejora en Satisfacción (%):</label>
+              <input
+                type="number"
+                id="mejora_satisfaccion"
+                min="0"
+                max="100"
+                placeholder="25"
+              />
+            </div>
+          </div>
+
+          <div class="subsection-header">Recomendaciones Finales</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Proporcione recomendaciones finales para la organización...
+            </div>
+            <textarea id="recomendaciones_finales" placeholder=""></textarea>
+          </div>
+        </div>
+
+        <!-- Sección 7: Anexos -->
+        <div class="document-section" id="anexos">
+          <div class="section-header">7. Anexos</div>
+
+          <div class="subsection-header">Plan de Pruebas (IEEE 829/29119)</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Incluya el plan de pruebas siguiendo los estándares IEEE 829 o
+              29119...
+            </div>
+            <textarea id="plan_pruebas" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Casos de Prueba</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Documente los casos de prueba diseñados para validar los
+              procesos...
+            </div>
+            <textarea id="casos_prueba" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Reportes de Defectos</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Incluya ejemplos de reportes de defectos y su seguimiento...
+            </div>
+            <textarea id="reportes_defectos" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Evidencias del Trabajo en Equipo</div>
+          <div class="attachment-area">
+            <div style="font-size: 48px; margin-bottom: 15px">📎</div>
+            <div
+              style="font-size: 16px; font-weight: bold; margin-bottom: 10px"
+            >
+              Área de Evidencias
+            </div>
+            <div style="font-size: 12px; color: #666">
+              Incluya capturas de pantalla, actas de reunión, distribución de
+              tareas,<br />
+              cronogramas de trabajo, y cualquier otra evidencia del trabajo
+              colaborativo
+            </div>
+          </div>
+
+          <div class="content-area">
+            <div class="placeholder">
+              Describa las evidencias del trabajo en equipo y la metodología
+              utilizada...
+            </div>
+            <textarea id="evidencias_equipo" placeholder=""></textarea>
+          </div>
+
+          <div class="subsection-header">Referencias y Fuentes</div>
+          <div class="content-area">
+            <div class="placeholder">
+              Liste todas las referencias bibliográficas y fuentes
+              consultadas...
+            </div>
+            <textarea id="referencias" placeholder=""></textarea>
+          </div>
+
+          <div class="info-box success">
+            <strong>✅ Documento Completo:</strong> Ha completado todas las
+            secciones del documento final integrado. Revise cada sección antes
+            de la presentación final.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentSection = "datos-generales";
+      const sections = [
+        "datos-generales",
+        "diagnostico",
+        "gap-analysis",
+        "roadmap",
+        "gestion-cambio",
+        "conclusiones",
+        "anexos",
+      ];
+
+      function showSection(sectionId) {
+        // Ocultar todas las secciones
+        document.querySelectorAll(".document-section").forEach((section) => {
+          section.classList.remove("active");
+        });
+
+        // Mostrar la sección seleccionada
+        document.getElementById(sectionId).classList.add("active");
+
+        // Actualizar botones de navegación
+        document.querySelectorAll(".nav-button").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        event.target.classList.add("active");
+
+        currentSection = sectionId;
+        updateProgress();
+      }
+
+      function updateProgress() {
+        const currentIndex = sections.indexOf(currentSection);
+        const progress = ((currentIndex + 1) / sections.length) * 100;
+
+        document.getElementById("progress-fill").style.width = progress + "%";
+        document.getElementById("progress-text").textContent = `${
+          currentIndex + 1
+        } de ${sections.length} secciones`;
+      }
+
+      function saveDocument() {
+        const documentData = {
+          timestamp: new Date().toISOString(),
+          version: document.getElementById("version").value,
+          data: {},
+        };
+
+        // Recopilar todos los campos del formulario
+        const inputs = document.querySelectorAll("input, select, textarea");
+        inputs.forEach((input) => {
+          if (input.id) {
+            documentData.data[input.id] = input.value;
+          }
+        });
+
+        const dataStr = JSON.stringify(documentData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `documento_final_certificacion_${
+          new Date().toISOString().split("T")[0]
+        }.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+
+        alert("✅ Documento guardado exitosamente");
+      }
+
+      function loadDocument() {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".json";
+        input.onchange = function (e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              try {
+                const documentData = JSON.parse(e.target.result);
+
+                // Cargar todos los campos
+                Object.keys(documentData.data).forEach((fieldId) => {
+                  const field = document.getElementById(fieldId);
+                  if (field) {
+                    field.value = documentData.data[fieldId];
+                  }
+                });
+
+                alert("✅ Documento cargado exitosamente");
+              } catch (error) {
+                alert("❌ Error al cargar el archivo: " + error.message);
+              }
+            };
+            reader.readAsText(file);
+          }
+        };
+        input.click();
+      }
+
+      function exportToPDF() {
+        alert(
+          '📄 Para exportar a PDF:\n\n1. Usa Ctrl+P (Windows) o Cmd+P (Mac)\n2. Selecciona "Guardar como PDF"\n3. Elige orientación "Vertical"\n4. Asegúrate de incluir "Gráficos de fondo"\n\nEl documento se imprimirá con saltos de página automáticos entre secciones.'
+        );
+        window.print();
+      }
+
+      function printDocument() {
+        window.print();
+      }
+
+      function validateDocument() {
+        const requiredFields = [
+          "empresa",
+          "equipo",
+          "fecha_presentacion",
+          "resumen_ejecutivo",
+          "contexto_actual",
+          "problemas_detectados",
+          "nivel_madurez",
+          "modelo_propuesto",
+          "justificacion_modelo",
+        ];
+
+        const missingFields = [];
+        requiredFields.forEach((fieldId) => {
+          const field = document.getElementById(fieldId);
+          if (!field || !field.value.trim()) {
+            missingFields.push(fieldId);
+          }
+        });
+
+        if (missingFields.length === 0) {
+          alert(
+            "✅ Validación exitosa: Todos los campos obligatorios están completos."
+          );
+        } else {
+          alert(
+            `⚠️ Campos faltantes:\n\n${missingFields
+              .map((f) => `• ${f.replace("_", " ")}`)
+              .join("\n")}\n\nComplete estos campos antes de la presentación.`
+          );
+        }
+      }
+
+      function generateSummary() {
+        const empresa = document.getElementById("empresa").value || "[Empresa]";
+        const equipo = document.getElementById("equipo").value || "[Equipo]";
+        const modelo =
+          document.getElementById("modelo_propuesto").value || "[Modelo]";
+
+        const summary =
+          `📋 RESUMEN DEL PROYECTO\n\n` +
+          `🏢 Empresa: ${empresa}\n` +
+          `👥 Equipo: ${equipo}\n` +
+          `📊 Modelo propuesto: ${modelo}\n` +
+          `📅 Fecha: ${new Date().toLocaleDateString("es-ES")}\n\n` +
+          `Este documento integra el análisis completo de certificación de calidad realizado para ${empresa}, ` +
+          `incluyendo diagnóstico, gap analysis, roadmap de implementación y plan de gestión del cambio.`;
+
+        navigator.clipboard
+          .writeText(summary)
+          .then(() => {
+            alert("📋 Resumen copiado al portapapeles");
+          })
+          .catch(() => {
+            alert("📋 Resumen generado:\n\n" + summary);
+          });
+      }
+
+      function checkCompleteness() {
+        const allTextareas = document.querySelectorAll("textarea");
+        const allInputs = document.querySelectorAll(
+          'input[type="text"], input[type="number"], input[type="date"]'
+        );
+        const allSelects = document.querySelectorAll("select");
+
+        let completed = 0;
+        let total = allTextareas.length + allInputs.length + allSelects.length;
+
+        [...allTextareas, ...allInputs, ...allSelects].forEach((field) => {
+          if (field.value.trim()) completed++;
+        });
+
+        const percentage = Math.round((completed / total) * 100);
+
+        alert(
+          `📊 COMPLETITUD DEL DOCUMENTO\n\n` +
+            `✅ Campos completados: ${completed}\n` +
+            `📝 Total de campos: ${total}\n` +
+            `📈 Porcentaje: ${percentage}%\n\n` +
+            `${
+              percentage >= 80
+                ? "🎉 ¡Excelente progreso!"
+                : percentage >= 60
+                ? "👍 Buen avance, continúe"
+                : "⚠️ Necesita más trabajo"
+            }`
+        );
+      }
+
+      // Inicialización
+      window.onload = function () {
+        // Establecer fecha actual
+        document.getElementById("fecha_presentacion").value = new Date()
+          .toISOString()
+          .split("T")[0];
+
+        // Configurar placeholders dinámicos
+        document.querySelectorAll(".content-area").forEach((area) => {
+          const textarea = area.querySelector("textarea");
+          const placeholder = area.querySelector(".placeholder");
+
+          if (textarea && placeholder) {
+            textarea.addEventListener("input", function () {
+              placeholder.style.display = this.value ? "none" : "block";
+            });
+
+            textarea.addEventListener("focus", function () {
+              placeholder.style.display = "none";
+            });
+
+            textarea.addEventListener("blur", function () {
+              if (!this.value) {
+                placeholder.style.display = "block";
+              }
+            });
+          }
+        });
+
+        updateProgress();
+      };
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'97f4a021466d5e03',t:'MTc1NzkwMjYyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+    <script defer src=" js/back-home.js\></script>`r`n </body>
+</html>
+

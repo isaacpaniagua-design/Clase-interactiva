@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión · Plataforma QS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1 class="text-2xl font-semibold mb-4 text-center">Iniciar sesión</h1>
+      <button
+        id="googleLoginBtn"
+        class="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md font-medium flex items-center justify-center gap-2"
+      >
+        <!-- Google logo (simple SVG) -->
+        <svg class="w-5 h-5" viewBox="0 0 488 512" fill="currentColor" aria-hidden="true"><path d="M488 261.8C488 403.3 392.3 512 244.5 512 109.3 512 0 402.8 0 267.5S109.3 23 244.5 23c66.8 0 121.6 24.3 163.8 64.2l-66.5 63.7C306.8 117.9 278.9 105 244.5 105c-85 0-154 69.1-154 154.5s69 154.5 154 154.5c73.9 0 120.3-43.2 134.7-102.8H244.5v-82.3h243.4c2.3 13.2 3.5 26.7 3.5 40.9z"/></svg>
+        Iniciar sesión con Google
+      </button>
+      <div id="errorMessage" class="text-red-600 text-sm mt-4 text-center"></div>
+      <p class="mt-4 text-center text-sm">
+        <a href="index.html" class="text-indigo-600 hover:underline">Regresar al inicio</a>
+      </p>
+    </div>
+    <script type="module">
+      import { initFirebase, signInWithGoogleOpen } from './js/firebase.js';
+      initFirebase();
+      const btn = document.getElementById('googleLoginBtn');
+      const errorDiv = document.getElementById('errorMessage');
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        errorDiv.textContent = '';
+        try {
+          await signInWithGoogleOpen();
+          window.location.href = 'index.html';
+        } catch (err) {
+          errorDiv.textContent = err?.message || 'Error al iniciar sesión con Google.';
+        }
+      });
+    </script>
+  </body>
+</html>

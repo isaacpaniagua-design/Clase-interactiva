@@ -1,0 +1,703 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Defectos - Bug Report</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Times New Roman", serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 250px;
+        height: 100vh;
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        padding: 20px;
+        z-index: 1000;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar h2 {
+        margin-bottom: 30px;
+        font-size: 1.2em;
+        text-align: center;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        padding-bottom: 15px;
+      }
+
+      .sidebar button {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .main-content {
+        margin-left: 250px;
+        padding: 20px;
+        min-height: 100vh;
+      }
+
+      .document {
+        background: white;
+        max-width: 210mm;
+        margin: 0 auto;
+        padding: 25mm;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 3px solid #e74c3c;
+        padding-bottom: 20px;
+      }
+
+      .header h1 {
+        color: #e74c3c;
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .header .subtitle {
+        color: #666;
+        font-size: 14px;
+        font-style: italic;
+      }
+
+      .section {
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+      }
+
+      .section h2 {
+        color: #e74c3c;
+        font-size: 16px;
+        margin-bottom: 8px;
+        padding: 8px 0;
+        border-bottom: 2px solid #e0e0e0;
+      }
+
+      .section-description {
+        color: #666;
+        font-size: 12px;
+        margin-bottom: 8px;
+        font-style: italic;
+      }
+
+      .input-area {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 12px;
+        min-height: 60px;
+        background-color: #fafafa;
+        font-family: inherit;
+        font-size: 12px;
+        line-height: 1.6;
+        resize: vertical;
+        width: 100%;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+
+      .input-area:focus {
+        border-color: #e74c3c;
+        background-color: white;
+      }
+
+      .short-input {
+        min-height: 40px;
+      }
+
+      .medium-input {
+        min-height: 80px;
+      }
+
+      .long-input {
+        min-height: 120px;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .priority-severity {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 15px;
+      }
+
+      .select-field {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 12px;
+        background-color: #fafafa;
+        font-family: inherit;
+        font-size: 12px;
+        width: 100%;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+
+      .select-field:focus {
+        border-color: #e74c3c;
+        background-color: white;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      .steps-section {
+        background: #fff5f5;
+        padding: 15px;
+        border-left: 4px solid #e74c3c;
+        margin: 10px 0;
+        border-radius: 4px;
+      }
+
+      .info-box {
+        background: #f8f9fa;
+        padding: 12px;
+        border-radius: 4px;
+        margin: 8px 0;
+        font-size: 11px;
+        color: #555;
+      }
+
+      /* Estilos para impresión */
+      @media print {
+        body {
+          background: white;
+          font-size: 11pt;
+          line-height: 1.4;
+        }
+
+        .sidebar {
+          display: none !important;
+        }
+
+        .main-content {
+          margin-left: 0 !important;
+          padding: 0 !important;
+        }
+
+        .document {
+          box-shadow: none;
+          border-radius: 0;
+          max-width: none;
+          padding: 15mm;
+          margin: 0;
+        }
+
+        .section {
+          page-break-inside: avoid;
+          margin-bottom: 15px;
+        }
+
+        .page-break {
+          page-break-before: always;
+        }
+
+        .input-area,
+        .select-field {
+          border: 1px solid #333;
+          background: white;
+          font-size: 10pt;
+        }
+
+        .header h1 {
+          font-size: 18pt;
+        }
+
+        .section h2 {
+          font-size: 14pt;
+        }
+
+        .two-column {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .priority-severity {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 15mm;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h2>🐛 Acciones</h2>
+      <button onclick="saveForm()">💾 Guardar Progreso</button>
+      <button onclick="loadForm()">📂 Cargar Progreso</button>
+      <button onclick="clearForm()">🗑️ Limpiar Todo</button>
+      <button onclick="exportToPDF()">📄 Exportar a PDF</button>
+      <button onclick="printDocument()">🖨️ Imprimir</button>
+
+      <div
+        style="
+          margin-top: 30px;
+          padding-top: 20px;
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
+        "
+      >
+        <h3 style="font-size: 14px; margin-bottom: 15px">📋 Navegación</h3>
+        <button onclick="scrollToSection('section1')">1. ID Defecto</button>
+        <button onclick="scrollToSection('section2')">2. Título</button>
+        <button onclick="scrollToSection('section3')">3. Proyecto</button>
+        <button onclick="scrollToSection('section4')">4. Build</button>
+        <button onclick="scrollToSection('section5')">5. Entorno</button>
+        <button onclick="scrollToSection('section6')">6. Clasificación</button>
+        <button onclick="scrollToSection('section9')">9. Reportado por</button>
+        <button onclick="scrollToSection('section11')">11. Descripción</button>
+        <button onclick="scrollToSection('section12')">12. Pasos</button>
+        <button onclick="scrollToSection('section13')">13. Resultados</button>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="document">
+        <div class="header">
+          <h1>Anexo 2: Formato de Registro de Defectos</h1>
+          <div class="subtitle">(Bug Report)</div>
+          <div style="margin-top: 15px; font-size: 12px; color: #888">
+            <strong>Cuándo presentarlo:</strong> Semana 12, Sesión 35 (Gestión
+            de Defectos)<br />
+            <strong>Nota:</strong> Este formato es un entregable clave para
+            documentar los defectos encontrados durante las pruebas.
+          </div>
+        </div>
+
+        <div class="two-column">
+          <div class="section" id="section1">
+            <h2>1. ID del Defecto</h2>
+            <div class="section-description">
+              Ejemplo: BUG-001<br />
+              Código único que identifique el defecto.
+            </div>
+            <input
+              type="text"
+              class="input-area short-input"
+              id="id_defecto"
+              placeholder="BUG-001"
+            />
+          </div>
+
+          <div class="section" id="section4">
+            <h2>4. Build / Versión</h2>
+            <div class="section-description">Ejemplo: v1.0.5</div>
+            <input
+              type="text"
+              class="input-area short-input"
+              id="build_version"
+              placeholder="v1.0.5"
+            />
+          </div>
+        </div>
+
+        <div class="section" id="section2">
+          <h2>2. Título (breve y descriptivo)</h2>
+          <div class="section-description">
+            Ejemplo: El sistema permite login con contraseña vacía.
+          </div>
+          <input
+            type="text"
+            class="input-area short-input"
+            id="titulo"
+            placeholder="Describe brevemente el defecto..."
+          />
+        </div>
+
+        <div class="section" id="section3">
+          <h2>3. Proyecto / Módulo</h2>
+          <div class="section-description">
+            Ejemplo: Proyecto X / Autenticación.
+          </div>
+          <input
+            type="text"
+            class="input-area short-input"
+            id="proyecto_modulo"
+            placeholder="Nombre del proyecto / Módulo afectado"
+          />
+        </div>
+
+        <div class="section" id="section5">
+          <h2>5. Entorno</h2>
+          <div class="section-description">
+            SO, navegador, versión DB, etc.<br />
+            Ejemplo: Windows 10, Chrome 120, DB MySQL 8.
+          </div>
+          <textarea
+            class="input-area medium-input"
+            id="entorno"
+            placeholder="Describe el entorno donde se encontró el defecto..."
+          ></textarea>
+        </div>
+
+        <div class="section" id="section6">
+          <h2>6-8. Clasificación del Defecto</h2>
+          <div class="priority-severity">
+            <div>
+              <label
+                style="
+                  font-weight: bold;
+                  color: #e74c3c;
+                  display: block;
+                  margin-bottom: 5px;
+                "
+                >6. Severidad</label
+              >
+              <select class="select-field" id="severidad">
+                <option value="">Seleccionar...</option>
+                <option value="Crítica">Crítica</option>
+                <option value="Alta">Alta</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
+              </select>
+            </div>
+            <div>
+              <label
+                style="
+                  font-weight: bold;
+                  color: #e74c3c;
+                  display: block;
+                  margin-bottom: 5px;
+                "
+                >7. Prioridad</label
+              >
+              <select class="select-field" id="prioridad">
+                <option value="">Seleccionar...</option>
+                <option value="Urgente">Urgente</option>
+                <option value="Alta">Alta</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
+              </select>
+            </div>
+            <div>
+              <label
+                style="
+                  font-weight: bold;
+                  color: #e74c3c;
+                  display: block;
+                  margin-bottom: 5px;
+                "
+                >8. Estado</label
+              >
+              <select class="select-field" id="estado">
+                <option value="">Seleccionar...</option>
+                <option value="Nuevo">Nuevo</option>
+                <option value="Asignado">Asignado</option>
+                <option value="En progreso">En progreso</option>
+                <option value="Resuelto">Resuelto</option>
+                <option value="Cerrado">Cerrado</option>
+                <option value="Reabierto">Reabierto</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <div class="two-column">
+          <div class="section" id="section9">
+            <h2>9. Reportado por / Fecha</h2>
+            <div class="section-description">Nombre y fecha de reporte.</div>
+            <textarea
+              class="input-area medium-input"
+              id="reportado_por"
+              placeholder="Nombre del reportador y fecha..."
+            ></textarea>
+          </div>
+
+          <div class="section" id="section10">
+            <h2>10. Asignado a</h2>
+            <div class="section-description">
+              Nombre del desarrollador responsable.
+            </div>
+            <textarea
+              class="input-area medium-input"
+              id="asignado_a"
+              placeholder="Nombre del desarrollador asignado..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="section" id="section11">
+          <h2>11. Descripción detallada</h2>
+          <div class="section-description">
+            Explicación clara del problema encontrado.
+          </div>
+          <textarea
+            class="input-area long-input"
+            id="descripcion"
+            placeholder="Proporciona una descripción detallada del defecto..."
+          ></textarea>
+        </div>
+
+        <div class="section" id="section12">
+          <h2>12. Pasos para reproducir</h2>
+          <div class="section-description">
+            Ejemplo:<br />
+            1. Ingresar usuario válido<br />
+            2. Dejar contraseña vacía<br />
+            3. Hacer clic en Ingresar
+          </div>
+          <div class="steps-section">
+            <textarea
+              class="input-area long-input"
+              id="pasos_reproducir"
+              placeholder="1. Primer paso...&#10;2. Segundo paso...&#10;3. Tercer paso..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="two-column">
+          <div class="section" id="section13">
+            <h2>13. Resultado actual</h2>
+            <div class="section-description">
+              Ejemplo: El sistema permite el acceso.
+            </div>
+            <textarea
+              class="input-area medium-input"
+              id="resultado_actual"
+              placeholder="¿Qué está ocurriendo actualmente?"
+            ></textarea>
+          </div>
+
+          <div class="section" id="section14">
+            <h2>14. Resultado esperado</h2>
+            <div class="section-description">
+              Ejemplo: El sistema debe mostrar mensaje 'Contraseña requerida'.
+            </div>
+            <textarea
+              class="input-area medium-input"
+              id="resultado_esperado"
+              placeholder="¿Qué debería ocurrir?"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="section" id="section15">
+          <h2>15. Archivos adjuntos</h2>
+          <div class="section-description">Screenshots, logs, videos, etc.</div>
+          <div class="info-box">
+            📎 <strong>Nota:</strong> Lista aquí los nombres de los archivos
+            adjuntos que acompañan este reporte (capturas de pantalla, logs,
+            videos, etc.)
+          </div>
+          <textarea
+            class="input-area medium-input"
+            id="archivos_adjuntos"
+            placeholder="Lista los archivos adjuntos: screenshot_error.png, log_sistema.txt, etc."
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function scrollToSection(sectionId) {
+        document
+          .getElementById(sectionId)
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      function saveForm() {
+        const formData = {};
+
+        // Guardar inputs de texto
+        const textInputs = document.querySelectorAll('input[type="text"]');
+        textInputs.forEach((input) => {
+          formData[input.id] = input.value;
+        });
+
+        // Guardar textareas
+        const textareas = document.querySelectorAll("textarea");
+        textareas.forEach((textarea) => {
+          formData[textarea.id] = textarea.value;
+        });
+
+        // Guardar selects
+        const selects = document.querySelectorAll("select");
+        selects.forEach((select) => {
+          formData[select.id] = select.value;
+        });
+
+        const dataStr = JSON.stringify(formData);
+        const dataBlob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "registro_defectos_progreso.json";
+        link.click();
+        URL.revokeObjectURL(url);
+
+        alert("✅ Progreso guardado exitosamente");
+      }
+
+      function loadForm() {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".json";
+        input.onchange = function (e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              try {
+                const formData = JSON.parse(e.target.result);
+                Object.keys(formData).forEach((key) => {
+                  const element = document.getElementById(key);
+                  if (element) {
+                    element.value = formData[key];
+                  }
+                });
+                alert("✅ Progreso cargado exitosamente");
+              } catch (error) {
+                alert("❌ Error al cargar el archivo");
+              }
+            };
+            reader.readAsText(file);
+          }
+        };
+        input.click();
+      }
+
+      function clearForm() {
+        if (
+          confirm("¿Estás seguro de que quieres limpiar todo el formulario?")
+        ) {
+          const inputs = document.querySelectorAll("input, textarea, select");
+          inputs.forEach((input) => {
+            input.value = "";
+          });
+          alert("✅ Formulario limpiado");
+        }
+      }
+
+      function exportToPDF() {
+        alert(
+          '📄 Usa Ctrl+P o Cmd+P para exportar a PDF. Asegúrate de seleccionar "Guardar como PDF" en las opciones de impresión.'
+        );
+        window.print();
+      }
+
+      function printDocument() {
+        window.print();
+      }
+
+      // Auto-guardar cada 2 minutos
+      setInterval(() => {
+        const formData = {};
+        const inputs = document.querySelectorAll("input, textarea, select");
+        inputs.forEach((input) => {
+          if (input.value.trim()) {
+            formData[input.id] = input.value;
+          }
+        });
+
+        if (Object.keys(formData).length > 0) {
+          localStorage.setItem(
+            "registro_defectos_auto_save",
+            JSON.stringify(formData)
+          );
+        }
+      }, 120000);
+
+      // Cargar auto-guardado al iniciar
+      window.onload = function () {
+        const autoSave = localStorage.getItem("registro_defectos_auto_save");
+        if (autoSave) {
+          try {
+            const formData = JSON.parse(autoSave);
+            Object.keys(formData).forEach((key) => {
+              const element = document.getElementById(key);
+              if (element && !element.value) {
+                element.value = formData[key];
+              }
+            });
+          } catch (error) {
+            console.log("No se pudo cargar el auto-guardado");
+          }
+        }
+      };
+
+      // Auto-completar fecha actual en "Reportado por"
+      document
+        .getElementById("reportado_por")
+        .addEventListener("focus", function () {
+          if (!this.value) {
+            const today = new Date().toLocaleDateString("es-ES");
+            this.placeholder = `Nombre del reportador - ${today}`;
+          }
+        });
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'97f4929a35735e03',t:'MTc1NzkwMjA2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+    <script defer src=" js/back-home.js\></script>`r`n </body>
+</html>
+

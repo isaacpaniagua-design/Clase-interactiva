@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MoProSoft: Calidad Hecha en México</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #00c851 0%,
+          #007e33 50%,
+          #c41e3a 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+      }
+
+      .presentation-container {
+        max-width: 1200px;
+        width: 95%;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+
+      .slide {
+        display: none;
+        padding: 60px;
+        min-height: 700px;
+        animation: slideIn 0.5s ease-out;
+      }
+
+      .slide.active {
+        display: block;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .slide h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 20px;
+        line-height: 1.2;
+      }
+
+      .slide h2 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 30px;
+      }
+
+      .subtitle {
+        font-size: 1.4rem;
+        color: #718096;
+        margin-bottom: 40px;
+        font-style: italic;
+        line-height: 1.4;
+      }
+
+      .source {
+        background: #f7fafc;
+        padding: 20px;
+        border-left: 4px solid #00c851;
+        margin: 30px 0;
+        border-radius: 8px;
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 60px;
+        background: #f8f9fa;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .nav-button {
+        background: #00c851;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .nav-button:hover {
+        background: #007e33;
+        transform: translateY(-2px);
+      }
+
+      .nav-button:disabled {
+        background: #cbd5e0;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .slide-counter {
+        background: #00c851;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+      }
+
+      .teacher-notes {
+        background: #e6fffa;
+        border: 2px solid #00c851;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 30px 0;
+      }
+
+      .teacher-notes h4 {
+        color: #007e33;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .teacher-notes p {
+        color: #2d3748;
+        line-height: 1.6;
+      }
+
+      .highlight {
+        background: linear-gradient(120deg, #c6f6d5 0%, #fed7d7 100%);
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        border-left: 4px solid #00c851;
+      }
+
+      .mexican-flag {
+        display: flex;
+        height: 8px;
+        margin: 20px 0;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .flag-green {
+        flex: 1;
+        background: #00c851;
+      }
+
+      .flag-white {
+        flex: 1;
+        background: white;
+        border: 1px solid #e2e8f0;
+      }
+
+      .flag-red {
+        flex: 1;
+        background: #c41e3a;
+      }
+
+      .origin-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin: 30px 0;
+      }
+
+      .origin-card {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .origin-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .origin-card.developers {
+        border-color: #00c851;
+        background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+      }
+
+      .origin-card.problem {
+        border-color: #c41e3a;
+        background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+      }
+
+      .origin-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: #2d3748;
+      }
+
+      .developer-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .developer-list li {
+        background: rgba(0, 200, 81, 0.1);
+        margin: 10px 0;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border-left: 3px solid #00c851;
+      }
+
+      .problem-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .problem-list li {
+        background: rgba(196, 30, 58, 0.1);
+        margin: 10px 0;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border-left: 3px solid #c41e3a;
+      }
+
+      .objective-box {
+        background: linear-gradient(135deg, #00c851 0%, #007e33 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 30px 0;
+        text-align: center;
+      }
+
+      .objective-box h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+      }
+
+      .objective-box p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        font-style: italic;
+      }
+
+      .categories-container {
+        margin: 30px 0;
+      }
+
+      .category-card {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 25px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .category-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+      }
+
+      .category-card.direction::before {
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .category-card.management::before {
+        background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+      }
+
+      .category-card.operation::before {
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+      }
+
+      .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .category-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .category-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: white;
+        font-weight: bold;
+      }
+
+      .direction .category-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .management .category-icon {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+
+      .operation .category-icon {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+
+      .category-title {
+        flex: 1;
+      }
+
+      .category-title h3 {
+        font-size: 1.6rem;
+        color: #2d3748;
+        margin-bottom: 5px;
+      }
+
+      .category-title .category-subtitle {
+        color: #718096;
+        font-style: italic;
+      }
+
+      .category-content {
+        margin-left: 75px;
+      }
+
+      .category-focus {
+        background: #f7fafc;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #00c851;
+      }
+
+      .category-focus strong {
+        color: #2d3748;
+      }
+
+      .process-list {
+        margin: 15px 0;
+      }
+
+      .process-item {
+        background: rgba(0, 200, 81, 0.05);
+        padding: 10px 15px;
+        margin: 8px 0;
+        border-radius: 6px;
+        border-left: 3px solid #00c851;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 15px 0;
+        font-style: italic;
+      }
+
+      .analogy-box strong {
+        font-style: normal;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 30px;
+        }
+
+        .slide h1 {
+          font-size: 2.2rem;
+        }
+
+        .slide h2 {
+          font-size: 1.8rem;
+        }
+
+        .origin-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .navigation {
+          padding: 15px 30px;
+        }
+
+        .category-content {
+          margin-left: 0;
+          margin-top: 20px;
+        }
+
+        .category-header {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .comparison-table-container {
+          font-size: 0.85rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+          padding: 12px 8px;
+        }
+
+        .conclusion-grid {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation-container">
+      <!-- Slide 1: Título -->
+      <div class="slide active">
+        <h1>MoProSoft: Calidad Hecha en México</h1>
+        <div class="mexican-flag">
+          <div class="flag-green"></div>
+          <div class="flag-white"></div>
+          <div class="flag-red"></div>
+        </div>
+        <p class="subtitle">
+          Un modelo de procesos diseñado para la realidad de la industria de
+          software mexicana.
+        </p>
+
+        <div class="source">
+          <strong>📚 Fuente Principal:</strong> "Modelo de Procesos para la
+          Industria de Software MoProSoft", Versión 1.3.
+        </div>
+
+        <div class="teacher-notes">
+          <h4>📝 Notas para el docente:</h4>
+          <p>
+            Inicia la sesión haciendo un puente con los modelos anteriores:
+            "Hemos estudiado CMMI e ISO, modelos robustos, internacionales, pero
+            a veces percibidos como complejos y costosos de implementar,
+            especialmente para empresas que recién comienzan. ¿Qué pasaría si
+            quisiéramos un modelo más ligero, más ágil y que hablara nuestro
+            idioma? De esa necesidad nació MoProSoft."
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 2: Origen y Objetivos -->
+      <div class="slide">
+        <h2>¿Por qué un Modelo Mexicano?</h2>
+
+        <div class="origin-grid">
+          <div class="origin-card developers">
+            <h3>🏛️ Desarrollado por:</h3>
+            <ul class="developer-list">
+              <li><strong>La Secretaría de Economía de México</strong></li>
+              <li>
+                <strong
+                  >La Asociación Mexicana para la Calidad en Ingeniería de
+                  Software (AMCIS)</strong
+                >
+              </li>
+              <li>
+                <strong>Miembros de la academia y la industria</strong> de
+                software del país
+              </li>
+            </ul>
+          </div>
+
+          <div class="origin-card problem">
+            <h3>⚠️ El Problema a Resolver (Contexto ~2002):</h3>
+            <ul class="problem-list">
+              <li>
+                La industria de software en México estaba creciendo, pero era
+                muy <strong>heterogénea</strong>
+              </li>
+              <li>
+                Muchas empresas eran
+                <strong>Pequeñas y Medianas (PYMES)</strong>
+              </li>
+              <li>
+                Los modelos como CMMI eran vistos como demasiado
+                <strong>"pesados", caros y complejos</strong> para una empresa
+                de 10 o 20 ingenieros
+              </li>
+              <li>
+                Se necesitaba un <strong>estándar nacional</strong> para elevar
+                la capacidad y competitividad de la industria local
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="objective-box">
+          <h3>🎯 Objetivo Principal de MoProSoft:</h3>
+          <p>
+            "Proveer a las organizaciones de la industria de software mexicana
+            un modelo de procesos <strong>accesible y práctico</strong> que les
+            permita mejorar su calidad, aumentar su productividad y ser más
+            competitivas a nivel nacional e internacional."
+          </p>
+        </div>
+
+        <div class="teacher-notes">
+          <h4>📝 Puntos a desarrollar:</h4>
+          <p>
+            "MoProSoft no busca reemplazar a CMMI, sino ser una puerta de
+            entrada a la mejora de procesos. Es un 'primer gran paso' para que
+            las PYMES dejen de operar de forma caótica (como en CMMI Nivel 1) y
+            adopten un conjunto de prácticas estandarizadas y eficientes."
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 3: Estructura del Modelo -->
+      <div class="slide">
+        <h1>Una Estructura Sencilla y Funcional</h1>
+        <p class="subtitle">Las Tres Categorías de MoProSoft</p>
+
+        <div class="highlight" style="margin-bottom: 30px">
+          <strong>Concepto:</strong> MoProSoft organiza sus procesos en tres
+          categorías jerárquicas que reflejan la estructura de una empresa real.
+          Es más fácil de entender que la agrupación por niveles de CMMI.
+        </div>
+
+        <div class="categories-container">
+          <div class="category-card direction">
+            <div class="category-header">
+              <div class="category-icon">DIR</div>
+              <div class="category-title">
+                <h3>1. Categoría de Alta Dirección (DIR)</h3>
+                <div class="category-subtitle">
+                  La estrategia del negocio. ¿Hacia dónde va la empresa?
+                </div>
+              </div>
+            </div>
+            <div class="category-content">
+              <div class="category-focus">
+                <strong>Proceso Clave:</strong> Gestión de Negocio. Incluye la
+                planificación estratégica, la definición de objetivos, la
+                gestión financiera y la inteligencia de mercado.
+              </div>
+              <div class="analogy-box">
+                <strong>Analogía:</strong> Es el "cerebro" de la organización,
+                el que define la visión y la dirección.
+              </div>
+            </div>
+          </div>
+
+          <div class="category-card management">
+            <div class="category-header">
+              <div class="category-icon">GER</div>
+              <div class="category-title">
+                <h3>2. Categoría de Gerencia (GER)</h3>
+                <div class="category-subtitle">
+                  La táctica. ¿Cómo administramos nuestros recursos para
+                  alcanzar la estrategia?
+                </div>
+              </div>
+            </div>
+            <div class="category-content">
+              <div class="category-focus">
+                <strong>Procesos Clave:</strong>
+              </div>
+              <div class="process-list">
+                <div class="process-item">
+                  <strong>Gestión de Procesos:</strong> Definir, mejorar y
+                  desplegar los procesos de la organización.
+                </div>
+                <div class="process-item">
+                  <strong>Gestión de Proyectos:</strong> Planificar, ejecutar y
+                  controlar los proyectos individuales.
+                </div>
+                <div class="process-item">
+                  <strong>Gestión de Recursos:</strong> Administrar al personal
+                  (capacitación, evaluación), la infraestructura (hardware,
+                  software) y el ambiente de trabajo.
+                </div>
+              </div>
+              <div class="analogy-box">
+                <strong>Analogía:</strong> Es el "sistema nervioso", que
+                coordina y gestiona los recursos para que el cuerpo se mueva de
+                forma eficiente.
+              </div>
+            </div>
+          </div>
+
+          <div class="category-card operation">
+            <div class="category-header">
+              <div class="category-icon">OPE</div>
+              <div class="category-title">
+                <h3>3. Categoría de Operación (OPE)</h3>
+                <div class="category-subtitle">
+                  La ejecución. El "hacer el trabajo" del día a día.
+                </div>
+              </div>
+            </div>
+            <div class="category-content">
+              <div class="category-focus">
+                <strong>Proceso Clave:</strong> Desarrollo y Mantenimiento de
+                Software. Cubre todo el ciclo de vida: desde el análisis de
+                requisitos, diseño, construcción y pruebas, hasta la entrega y
+                el mantenimiento del software.
+              </div>
+              <div class="analogy-box">
+                <strong>Analogía:</strong> Son los "brazos y piernas" de la
+                organización, los que construyen el producto.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="teacher-notes">
+          <h4>📝 Puntos a desarrollar:</h4>
+          <p>
+            "Esta estructura es muy intuitiva. Si eres el dueño de la empresa,
+            te enfocas en la categoría DIR. Si eres un gerente de proyecto, tu
+            mundo es la categoría GER. Y si eres un desarrollador o un tester,
+            tus actividades diarias están descritas en la categoría OPE. Es un
+            modelo que habla el idioma de los roles de una empresa."
+          </p>
+        </div>
+      </div>
+
+      <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">
+          ← Anterior
+        </button>
+        <div class="slide-counter">
+          <span id="currentSlide">1</span> / <span id="totalSlides">4</span>
+        </div>
+        <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">
+          Siguiente →
+        </button>
+      </div>
+    </div>
+
+    <script>
+      let currentSlideIndex = 0;
+      const slides = document.querySelectorAll(".slide");
+      const totalSlides = slides.length;
+
+      document.getElementById("totalSlides").textContent = totalSlides;
+
+      function showSlide(index) {
+        slides.forEach((slide) => slide.classList.remove("active"));
+        slides[index].classList.add("active");
+
+        document.getElementById("currentSlide").textContent = index + 1;
+        document.getElementById("prevBtn").disabled = index === 0;
+        document.getElementById("nextBtn").disabled = index === totalSlides - 1;
+
+        // Scroll to top smoothly when changing slides
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+
+      function changeSlide(direction) {
+        const newIndex = currentSlideIndex + direction;
+        if (newIndex >= 0 && newIndex < totalSlides) {
+          currentSlideIndex = newIndex;
+          showSlide(currentSlideIndex);
+        }
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") changeSlide(-1);
+        if (e.key === "ArrowRight") changeSlide(1);
+      });
+
+      // Initialize
+      showSlide(0);
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'97f43f4076e59d92',t:'MTc1Nzg5ODY1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+
+
+
+
+  <script defer src="js/back-home.js"></script>
+  <script defer src="js/nav-inject.js"></script>
+  </body>
+</html>
